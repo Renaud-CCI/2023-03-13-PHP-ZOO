@@ -6,6 +6,7 @@ class Employee {
     private string $name;
     private float $age;
     private string $sex;
+    private string $genderSymbol;
 
     public function __construct(array $data){
         // On fait une boucle avec le tableau de données
@@ -21,6 +22,39 @@ class Employee {
                 $this->$method($value);
             }
         }
+
+        if (isset($data["birthdate"])){
+            // Calcule l'âge à partir d'une date de naissance jj/mm/aaaa
+            //On déclare les dates à comparer
+            $dateNais = new DateTime($data["birthdate"]);
+            $dateJour = new DateTime();
+
+            //On calcule la différence
+            $difference = $dateNais->diff($dateJour);
+
+            //On retourne la différence en années
+            $this->setAge($difference->format('%Y')); 
+            
+           
+        }
+
+        if (isset($data["sex"])){
+            switch ($data["sex"]){
+                case "Homme":
+                    $this->setGenderSymbol('https://img.icons8.com/office/16/null/male.png');
+                    break;
+                case 'Femme':
+                    $this->setGenderSymbol('https://img.icons8.com/office/16/null/female.png');
+                    break;
+                case 'Autre':
+                    $this->setGenderSymbol('https://img.icons8.com/external-flaticons-lineal-color-flat-icons/64/null/external-gender-lgbt-flaticons-lineal-color-flat-icons-2.png');
+                    break;
+                default:
+                    $this->setGenderSymbol('');
+            }
+              
+        }
+
     }
 
 
@@ -61,6 +95,16 @@ class Employee {
 
     public function setSex($sex){
         $this->sex = $sex;
+
+        return $this;
+    }
+
+    public function getGenderSymbol(){
+        return $this->genderSymbol;
+    }
+
+    public function setGenderSymbol($genderSymbol){
+        $this->genderSymbol = $genderSymbol;
 
         return $this;
     }

@@ -4,11 +4,13 @@ class Zoo {
 
     private int $id;
     private string $name;
-    private int $employeeId;
-    private int $enclosureMaxNumber;
-    private array $enclosureArray;
+    private int $user_id;
+    private array $employees_id;
+    private int $enclosures_max_number;
+    private array $enclosures_array;
 
     public function __construct(array $data){
+
         // On fait une boucle avec le tableau de données
         foreach ($data as $key => $value) {
             // On récupère le nom des setters correspondants
@@ -26,15 +28,15 @@ class Zoo {
     
     
     // GETTERS & SETTERS
-        public function getId(){
-            return $this->id;
-        }
-    
-        public function setId($id){
-            $this->id = $id;
-    
-            return $this;
-        }
+    public function getId(){
+        return $this->id;
+    }
+
+    public function setId($id){
+        $this->id = $id;
+
+        return $this;
+    }
 
     public function getName(){
         return $this->name;
@@ -46,36 +48,45 @@ class Zoo {
         return $this;
     }
 
-    public function getEmployeeId(){
-        return $this->employeeId;
+    public function getEmployees_id(){
+        return $this->employees_id;
     }
 
-    public function setEmployeeId($employeeId){
-        $this->employeeId = $employeeId;
+    public function setEmployees_id($employees_id){
+        $this->employees_id = $employees_id;
 
         return $this;
     }
 
-    public function getEnclosureMaxNumber(){
-        return $this->enclosureMaxNumber;
+    public function getEnclosures_max_number(){
+        return $this->enclosures_max_number;
     }
 
-    public function setEnclosureMaxNumber($enclosureMaxNumber){
-        $this->enclosureMaxNumber = $enclosureMaxNumber;
+    public function setEnclosures_max_number($enclosures_max_number){
+        $this->enclosures_max_number = $enclosures_max_number;
 
         return $this;
     }
 
-    public function getEnclosureArray(){
-        return $this->enclosureArray;
+    public function getEnclosures_array(){
+        return $this->enclosures_array;
     }
 
-    public function setEnclosureArray($enclosureArray) {
-        $this->enclosureArray = $enclosureArray;
+    public function setEnclosures_array($enclosures_array) {
+        $this->enclosures_array = $enclosures_array;
 
         return $this;
     }
 
+    public function getUser_id(){
+        return $this->user_id;
+    }
+
+    public function setUser_id($user_id){
+        $this->user_id = $user_id;
+
+        return $this;
+    }
 }
 
 ?>

@@ -1,0 +1,91 @@
+@font-face {
+    font-family: "Phosph";
+    src:
+      url("./assets/fonts/Phosph10.ttf");
+}
+@font-face {
+    font-family: "Lanenar";
+    src:
+      url("./assets/fonts/LANENAR.ttf");
+}
+
+:root{
+    --white : #e4e7e1;
+    --white-medium : #ffedb7;
+    --white-dark : #e0c784;
+    --green-medium : #3b5c4f;
+    --green-dark : #0d1d21;
+}
+
+body{
+    background-color: var(--white);
+}
+
+/*---BACKGROUNDS COLORS---*/
+.bg-white-1{
+    background-color: var(--white);
+}
+
+.bg-green-1{
+    background-color: var(--green-medium);
+}
+.bg-green-2{
+    background-color: var(--green-dark);
+}
+
+
+/*---TEXTS COLORS---*/
+.text-green-1{
+    color:var(--green-medium);
+}
+
+.text-white-1{
+    color:var(--white);
+}
+
+
+/*---FONTS---*/
+.text-phosph{
+    font-family: 'Phosph';
+}
+.text-lan{
+    font-family: 'Lanenar';
+}
+
+/*---BORDERS COLORS--*/
+.border-white-1{
+    border-color: var(--white);
+}
+
+.border_green-1{
+    border-color: var(--green-medium);
+}
+
+/*---FORMS---*/
+.my-form{
+    background-color: var(--white-dark);
+}
+
+.employee-input ~ label{
+	border: 1px solid var(--white-medium);
+	box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+.employee-input:checked ~ label{
+	border: 2px solid var(--green-medium);
+	box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+.zooNameInput{
+    border: 2px solid var(--green-medium);
+}
+
+.zooSelectionCard{
+	border: 1px solid var(--white-medium);
+	box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+/*-----NAVBAR-----*/
+.hidden {
+    display: none;
+  }
+
