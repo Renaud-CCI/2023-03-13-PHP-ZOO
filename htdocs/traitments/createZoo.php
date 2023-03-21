@@ -9,7 +9,7 @@ $zooManager->setZooInDB($_GET['zooName'],$_SESSION['user_id'], [$_GET['employeeI
 
 $newZoo = $zooManager->findZoo($db->lastInsertId());
 
-$_SESSION['zooId'] = $newZoo->getId();
+$_SESSION['zoo_id'] = $newZoo->getId();
 
 header('Location: ../zooPage.php');
 

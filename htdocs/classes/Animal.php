@@ -2,16 +2,36 @@
 
 class Animal {
     protected int $id;
+    protected string $name;
+    protected string $sex;
     protected float $weight;
     protected float $height;
     protected float $age;
-    protected bool $isAngry;
+    protected bool $isHungry;
     protected bool $isSleppy;
     protected bool $isSick;
+    protected string $genderSymbol;
+    protected string $species;
 
     public function __construct(array $data){
         $this->hydrate($data);
+
+        if (isset($data["sex"])){
+            switch ($data["sex"]){
+                case "Male":
+                    $this->setGenderSymbol('https://img.icons8.com/office/16/null/male.png');
+                    break;
+                case 'Femelle':
+                    $this->setGenderSymbol('https://img.icons8.com/office/16/null/female.png');
+                    break;
+                case 'Autre':
+                    $this->setGenderSymbol('https://img.icons8.com/external-flaticons-lineal-color-flat-icons/64/null/external-gender-lgbt-flaticons-lineal-color-flat-icons-2.png');
+                    break;
+                default:
+                    $this->setGenderSymbol('');
+            }
         }
+    }
 
 
     protected function hydrate(array $data){
@@ -72,12 +92,12 @@ class Animal {
         return $this;
     }
 
-    public function getIsAngry(){
-        return $this->isAngry;
+    public function getIsHungry(){
+        return $this->isHungry;
     }
 
-    public function setIsAngry($isAngry){
-        $this->isAngry = $isAngry;
+    public function setIsHungry($isHungry){
+        $this->isHungry = $isHungry;
 
         return $this;
     }
@@ -98,6 +118,46 @@ class Animal {
 
     public function setIsSick($isSick){
         $this->isSick = $isSick;
+
+        return $this;
+    }
+
+    public function getName(){
+        return $this->name;
+    }
+
+    public function setName($name){
+        $this->name = $name;
+
+        return $this;
+    }
+
+    public function getGenderSymbol(){
+        return $this->genderSymbol;
+    }
+
+    public function setGenderSymbol($genderSymbol){
+        $this->genderSymbol = $genderSymbol;
+
+        return $this;
+    }
+
+    public function getSex(){
+        return $this->sex;
+    }
+
+    public function setSex($sex){
+        $this->sex = $sex;
+
+        return $this;
+    }
+
+    public function getSpecies(){
+        return $this->species;
+    }
+
+    public function setSpecies($species){
+        $this->species = $species;
 
         return $this;
     }

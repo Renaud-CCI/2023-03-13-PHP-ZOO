@@ -20,6 +20,16 @@ class ZooManager {
         
     }
 
+    public function updateZooEmployeesInDB(int $id, array $employeesId){
+
+        $query = $this->db->prepare('   UPDATE zoos
+                                        SET employees_id = :employeesId
+                                        WHERE id = :id');
+        $query->execute([   'employeesId' => serialize($employeesId),
+                            'id' => $id]);
+               
+    }
+
     public function findZoo(int $id){
         $query = $this->db->prepare('SELECT * FROM zoos
                                     WHERE id = :id');

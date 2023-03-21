@@ -8,6 +8,7 @@ class Zoo {
     private array $employees_id;
     private int $enclosures_max_number;
     private array $enclosures_array;
+    private int $day;
 
     public function __construct(array $data){
 
@@ -84,6 +85,16 @@ class Zoo {
 
     public function setUser_id($user_id){
         $this->user_id = $user_id;
+
+        return $this;
+    }
+
+    public function getDay(){
+        return $this->day;
+    }
+
+    public function setDay($day){
+        $this->day = $day;
 
         return $this;
     }

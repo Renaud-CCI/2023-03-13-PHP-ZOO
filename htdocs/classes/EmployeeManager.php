@@ -8,6 +8,20 @@ class EmployeeManager {
         $this->setDb($db);
     }
 
+    public function findEmployee(int $id){
+        $query = $this->db->prepare('SELECT * FROM employees
+                                    WHERE id = :id');
+        $query->execute(['id' => $id,]);
+
+        $employeeData = $query->fetch(PDO::FETCH_ASSOC);
+
+        // var_dump($employeeData);
+        // die;
+          
+        return new Employee($employeeData);
+                   
+    }
+
     public function findAllEmployees(){
         $query = $this->db->query('SELECT * FROM employees ORDER BY name');
         

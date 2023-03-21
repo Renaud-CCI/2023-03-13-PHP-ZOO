@@ -10,6 +10,8 @@ $userManager = new UserManager($db);
 $zooManager = new ZooManager($db);
 $employeeManager = new EmployeeManager($db);
 
+unset($_SESSION['employee_id']);
+
 
 $zoosDivDisplay = 'none';
 $landingSectionDisplay = 'none';
@@ -72,7 +74,7 @@ if (!isset ($_SESSION['user_id'])){
 
 <section id="connexionSection" class="container mx-auto flex justify-center items-center h-screen" style="display:<?=$connexionSectionDisplay?>">
   <div class="flex flex-col items-center">
-    <img class="max-w-full max-h-full" src="./assets/images/logos/Zoo-logo.png" alt="Image description">
+    <img class="max-h-full sm:max-w-xs w-full" src="./assets/images/logos/Zoo-logo.png" alt="logo du zoo">
     <div class="my-form p-8 rounded-lg shadow-lg">
       <h2 class="text-green-1 text-2xl font-bold mb-8">Connexion</h2>
       <form action="./index.php" method="post">
@@ -96,7 +98,7 @@ if (!isset ($_SESSION['user_id'])){
 
 <section id="inscriptionSection" class="container mx-auto flex justify-center items-center h-screen" style="display:<?=$inscriptionSectionDisplay?>">
   <div class="flex flex-col items-center">
-    <img class="max-w-full max-h-full" src="./assets/images/logos/Zoo-logo.png" alt="Image description">
+    <img class="max-w-xl max-h-full sm:max-w-xs" src="./assets/images/logos/Zoo-logo.png" alt="Image description">
     <div class="my-form p-8 rounded-lg shadow-lg">
       <h2 class="text-green-1 text-2xl font-bold mb-8">Inscription</h2>
 
@@ -124,8 +126,8 @@ if (!isset ($_SESSION['user_id'])){
   <nav class="flex items-center justify-between flex-wrap bg-green-1 p-6">
 
     <div class="flex items-center flex-shrink-0 text-white-1 text-phosph">
-      <img class="h-8 w-8 mr-2 rounded" src="./assets/images/logos/Zoo-logo.png" alt="Logo">
-      <span class="font-semibold text-xl tracking-tight">PHP ZOO</span>
+      <img class="w-10 mr-2 rounded" src="./assets/images/logos/Zoo-logo.png" alt="Logo">
+      <span class="font-semibold text-3xl tracking-tight">PHP ZOO</span>
     </div>
 
     <div class="block lg:hidden">
@@ -135,12 +137,12 @@ if (!isset ($_SESSION['user_id'])){
       </svg>
       </button>
     </div>
-    <div id="menu" class="w-full lg:w-auto lg:flex-grow lg:flex lg:items-center lg:justify-end lg:bg-blue-500 lg:p-2 lg:rounded lg:shadow-lg lg:block hidden">
+    <div id="menu" class="w-full lg:w-auto lg:flex-grow lg:flex lg:items-center lg:justify-end lg:bg-green-1 lg:p-2 lg:rounded lg:block hidden">
       <div class="lg:flex lg:items-center">
-        <a href="./index.php" class="block mt-4 lg:inline-block lg:mt-0 text-white-1  hover:text-white mr-4" style="display:<?= $createZooDivDisplay ?>">
+        <a href="./index.php" class="block mt-4 lg:inline-block lg:mt-0 text-white-1  hover:text-white mr-4 text-end" style="display:<?= $createZooDivDisplay ?>">
           Accueil
         </a>
-        <a href="./traitments/sessionDestroy.php" class="block mt-4 lg:inline-block lg:mt-0 text-white-1  hover:text-white mr-4">
+        <a href="./traitments/sessionDestroy.php" class="block mt-4 lg:inline-block lg:mt-0 text-white-1  hover:text-white mr-4 text-end">
           Se déconnecter
         </a>
       </div>
@@ -167,14 +169,18 @@ if (!isset ($_SESSION['user_id'])){
 
 
     <div class="container mx-auto" >
-      <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+      <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
 
       <?php foreach ($allZoos as $zoo) : ?>
       <div class="bg-white rounded-lg shadow-lg m-2 ">
-        <form action="" class="zooSelectionCard rounded-lg">
+        <form action="./zooPage.php" method="get" class="zooSelectionCard rounded-lg">
           <div class="p-4">
           <p class="text-xl font-semibold uppercase text-phosph text-green-1 text-center mb-2"><?=$zoo->getName()?></p>
             <p class="text-lan text-green-1 text-center font-semibold">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+          </div>
+          <div class="flex justify-center">
+            <input type="hidden" name="zoo_id" value="<?=$zoo->getId()?>">
+            <button class="bg-emerald-800 bg-green-1 text-white font-bold py-2 px-4 m-2 rounded w-l" type="submit">Choisir</button>
           </div>
         </form>
       </div>
@@ -217,10 +223,7 @@ if (!isset ($_SESSION['user_id'])){
       
       <div class="flex flex-col items-center mt-6">
         <button class="bg-green-1 text-white-1 font-bold py-2 px-4 rounded w-64">
-          Button
-        </button>
-      </div>
-    
+          Valider
     </form>
 
 
