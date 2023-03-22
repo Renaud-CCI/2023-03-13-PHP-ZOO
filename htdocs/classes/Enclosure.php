@@ -5,7 +5,7 @@ class Enclosure {
     private string $enclosure_type;
     private int $account;
     private string $name;
-    private string $cleanliness;
+    private float $cleanliness;
     private string $animals_type;
 
     

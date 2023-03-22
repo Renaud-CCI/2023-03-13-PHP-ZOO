@@ -26,6 +26,10 @@ body{
     background-color: var(--white);
 }
 
+.bg-white-2{
+    background-color: var(--white-dark);
+}
+
 .bg-green-1{
     background-color: var(--green-medium);
 }

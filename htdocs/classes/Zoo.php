@@ -9,6 +9,7 @@ class Zoo {
     private int $enclosures_max_number;
     private array $enclosures_array;
     private int $day;
+    private int $budget;
 
     public function __construct(array $data){
 
@@ -95,6 +96,16 @@ class Zoo {
 
     public function setDay($day){
         $this->day = $day;
+
+        return $this;
+    }
+
+    public function getBudget(){
+        return $this->budget;
+    }
+
+    public function setBudget($budget){
+        $this->budget = $budget;
 
         return $this;
     }

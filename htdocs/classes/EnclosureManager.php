@@ -7,15 +7,56 @@ class EnclosureManager {
     public function __construct(PDO $db){
         $this->setDb($db);
     }
+    
+    public function setEnclosureInDb(Enclosure $enclosure){
+        $query = $this->db->prepare('   INSERT INTO enclosures (zoo_id, enclosure_type, name)
+                                        VALUES (:zoo_id, :enclosure_type, :name)');
+        $query->execute([   
+                            'zoo_id' => $enclosure->getZoo_id(),
+                            'enclosure_type' => $enclosure->getEnclosure_type(),
+                            'name' => $enclosure->getName()]);
+    }
 
-    public function findEnclosure(int $id){
+    public function findEnclosure(int $enclosure_id){
         $query = $this->db->prepare('SELECT * FROM enclosures
                                     WHERE id = :id');
-        $query->execute(['id' => $id,]);
+        $query->execute(['id' => $enclosure_id,]);
         $enclosureData = $query->fetch(PDO::FETCH_ASSOC);
 
         return new $enclosureData['enclosure_type']($enclosureData);
                    
+    }
+
+    public function findCountAnimals(int $enclosure_id){
+        $query = $this->db->prepare('   SELECT COUNT(id) FROM animals
+                                        WHERE enclosure_id=:enclosure_id');
+        $query->execute(['enclosure_id' => $enclosure_id,]);
+        $count = $query->fetchColumn();
+        return $count;             
+    }
+
+    public function findCountHungryAnimals(int $enclosure_id){
+        $query = $this->db->prepare('   SELECT COUNT(id) FROM animals
+                                        WHERE enclosure_id=:enclosure_id AND isHungry<5');
+        $query->execute(['enclosure_id' => $enclosure_id,]);
+        $count = $query->fetchColumn();
+        return $count;             
+    }
+
+    public function findCountSickAnimals(int $enclosure_id){
+        $query = $this->db->prepare('   SELECT COUNT(id) FROM animals
+                                        WHERE enclosure_id=:enclosure_id AND isSick<5');
+        $query->execute(['enclosure_id' => $enclosure_id,]);
+        $count = $query->fetchColumn();
+        return $count;             
+    }
+
+    public function findCountSleppyAnimals(int $enclosure_id){
+        $query = $this->db->prepare('   SELECT COUNT(id) FROM animals
+                                        WHERE enclosure_id=:enclosure_id AND isSleppy=1');
+        $query->execute(['enclosure_id' => $enclosure_id,]);
+        $count = $query->fetchColumn();
+        return $count;             
     }
 
     public function findAllEnclosuresOfZoo(int $zoo_id){
@@ -35,17 +76,12 @@ class EnclosureManager {
         return $allEnclosuresAsObjects;       
     }
 
-    public function setEnclosureInDb(Enclosure $enclosure){
-        $query = $this->db->prepare('   INSERT INTO enclosures (zoo_id, enclosure_type, name)
-                                        VALUES (:zoo_id, :enclosure_type, :name)');
-        $query->execute([   
-                            'zoo_id' => $enclosure->getZoo_id(),
-                            'enclosure_type' => $enclosure->getEnclosure_type(),
-                            'name' => $enclosure->getName()]);
-    }
-
-    public function setZooEnclosureInDb(){
-
+    public function updateEnclosureName(int $id, string $name){
+        $query = $this->db->prepare('   UPDATE enclosures 
+                                        SET name = :name 
+                                        WHERE id = :id');
+        $query->execute([   'id' => $id,
+                            'name' => $name]);
     }
 
         

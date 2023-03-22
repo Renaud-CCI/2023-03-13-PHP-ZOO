@@ -7,6 +7,7 @@ function prettyDump($data) {
 }
 
 $enclosureManager = new EnclosureManager($db);
+$zooManager = new ZooManager($db);
 
 if (isset($_GET['enclosureType'])){
   $enclosureData = [
@@ -15,18 +16,14 @@ if (isset($_GET['enclosureType'])){
     'name' => $_GET['enclosureName']
   ];
   
-  $enclosure = new Enclosure($enclosureData);
+  $enclosure = new $_GET['enclosureType']($enclosureData);
+  $zoo = $zooManager->findZoo($_SESSION['zoo_id']);
 
   $enclosureManager->setEnclosureInDb($enclosure);
+  $zooManager->updateBudget($_SESSION['zoo_id'], $zoo->getBudget() - $enclosure->getPrice());
 
   header('Location: ./zooPage.php');
 }
-
-
-
-
-
-
 
 
 
@@ -79,7 +76,7 @@ if (isset($_GET['enclosureType'])){
           <label class="flex flex-col p-2 cursor-pointer bg-white rounded-lg shadow-lg" for="Park">
             <span class="text-xl text-center font-semibold uppercase text-phosph text-green-1">Enclos</span>
             <img src="https://img.icons8.com/officel/80/null/defensive-wood-wall.png" class="mx-auto w-20">
-            
+            <span class="text-base text-center font-semibold uppercase text-phosph text-green-1 mt-4">800 💰</span>            
           </label>
         </div>
  
@@ -88,7 +85,7 @@ if (isset($_GET['enclosureType'])){
           <label class="flex flex-col p-2 cursor-pointer bg-white rounded-lg shadow-lg" for="Aviary">
             <span class="text-xl text-center font-semibold uppercase text-phosph text-green-1">Volière</span>
             <img src="https://img.icons8.com/color-glass/48/000000/cage-of-a-bird.png" class="mx-auto w-20">
-            
+            <span class="text-base text-center font-semibold uppercase text-phosph text-green-1 mt-4">1000 💰</span> 
           </label>
         </div>
 
@@ -97,7 +94,7 @@ if (isset($_GET['enclosureType'])){
           <label class="flex flex-col p-2 cursor-pointer bg-white rounded-lg shadow-lg" for="Aquarium">
             <span class="text-xl text-center font-semibold uppercase text-phosph text-green-1">Aquarium</span>
             <img src="https://img.icons8.com/dusk/64/null/aquarium.png" class="mx-auto w-20">
-            
+            <span class="text-base text-center font-semibold uppercase text-phosph text-green-1 mt-4">1200 💰</span> 
           </label>
         </div>
       </div>

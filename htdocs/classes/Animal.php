@@ -7,9 +7,9 @@ class Animal {
     protected float $weight;
     protected float $height;
     protected float $age;
-    protected bool $isHungry;
+    protected float $isHungry;
     protected bool $isSleppy;
-    protected bool $isSick;
+    protected float $isSick;
     protected string $genderSymbol;
     protected string $species;
 

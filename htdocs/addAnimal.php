@@ -8,12 +8,16 @@ function prettyDump($data) {
 
 $enclosureManager = new EnclosureManager($db);
 $animalManager = new AnimalManager($db);
+$zooManager = new ZooManager($db);
 
 $enclosure = $enclosureManager->findEnclosure($_GET['enclosure_id']);
+$zoo = $zooManager->findZoo($_SESSION['zoo_id']);
 
 
 if (isset($_GET['animalName'])){
     $animalManager->setAnimalInDb($_GET);
+    $zooManager->updateBudget($_SESSION['zoo_id'], $zoo->getBudget() - $_GET['animal_price']);
+
     header('Location:./enclosurePage.php?enclosure_id='.$_GET['enclosure_id']);
 }
 
@@ -114,10 +118,11 @@ if ($enclosure->getAnimals_type() == 'default'){
 
 
     <input type="hidden" name="enclosure_id" value="<?=$_GET['enclosure_id']?>">
+    <input type="hidden" name="animal_price" value="<?= $enclosure->getAnimalPrice() ?>">
     
     <div class="flex flex-col items-center mt-6">
         <button class="bg-green-1 text-white-1 font-bold py-2 px-4 rounded w-64">
-            Valider
+            Valider <span class="text-base ml-3">- <?= $enclosure->getAnimalPrice() ?> 💰</span>
         </button>
     </div>
 </form>
