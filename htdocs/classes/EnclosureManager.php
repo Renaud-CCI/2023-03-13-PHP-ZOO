@@ -84,7 +84,7 @@ class EnclosureManager {
                             'name' => $name]);
     }
 
-    public function updateCleanliness(int $enclosureId, int $cleanliness){
+    public function updateCleanliness(int $enclosureId, float $cleanliness){
         $query = $this->db->prepare('   UPDATE enclosures 
                                         SET cleanliness = :cleanliness 
                                         WHERE id = :id');

@@ -44,7 +44,7 @@ foreach (array_unique($allFreeEmployeesId) as $employeeId){
 <?php require_once("./config/header.php"); ?>
 
 
-  <nav class="flex items-center justify-between flex-wrap bg-green-1 p-6">
+<nav class="flex items-center justify-between flex-wrap bg-green-1 px-6 py-3 w-auto">
 
     <div class="flex items-center flex-shrink-0 text-white-1 text-phosph">
       <img class="w-10 mr-2 rounded" src="./assets/images/logos/Zoo-logo.png" alt="Logo">

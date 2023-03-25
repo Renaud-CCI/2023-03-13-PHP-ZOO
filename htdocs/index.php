@@ -124,7 +124,7 @@ if (!isset ($_SESSION['user_id'])){
 
 <section id="landingSection" style="display:<?=$landingSectionDisplay?>">
 
-  <nav class="w-full flex items-center justify-between flex-wrap bg-green-1 p-6">
+  <nav class="flex items-center justify-between flex-wrap bg-green-1 px-6 py-3 w-auto">
 
     <div class="flex items-center flex-shrink-0 text-white-1 text-phosph">
       <img class="w-10 mr-2 rounded" src="./assets/images/logos/Zoo-logo.png" alt="Logo">
@@ -151,17 +151,17 @@ if (!isset ($_SESSION['user_id'])){
   </nav>
 
   <div class="container mx-auto flex justify-center items-center" >
-    <div id="zoosDiv" style="display:<?= $zoosDivDisplay ?>" >
+    <div id="TitleAndUser" style="display:<?= $zoosDivDisplay ?>" >
       <div class="flex flex-col items-center justify-center mt-6 text-green-1 text-phosph">
-        <h1 class="text-5xl font-bold text-center mb-4">Bienvenue <?= $user->getName() ?></h1>
+        <h1 class="text-6xl font-bold text-center mb-4">Bienvenue <?= $user->getName() ?></h1>
       </div>
 
-      <div class="flex flex-col items-center justify-center text-green-1 text-phosph">
-        <p class="text-2xl font-bold text-center mb-2">
+      <div id="newAdventure" class="flex flex-col items-center justify-center text-green-1 text-phosph">
+        <p class="text-3xl font-bold text-center mb-2">
         <?= $subtitleText ?>
         </p>
-        <p class="text-xl font-bold text-center mb-4">
-        <button class="bg-transparent hover:bg-emerald-900 text-green-1 font-semibold hover:text-amber-50 py-1 px-3 border border-emerald-900 hover:border-transparent rounded" onclick="window.location.href = './index.php?create_zoo=true';">
+        <p class="text-2xl font-bold text-center mb-4">
+        <button class=" bg-transparent hover:bg-emerald-900 text-green-1 font-semibold hover:text-amber-50 py-1 px-3 border border-emerald-900 hover:border-transparent rounded" onclick="window.location.href = './index.php?create_zoo=true';">
           créé une nouvelle aventure !
         </button>
         
@@ -170,24 +170,58 @@ if (!isset ($_SESSION['user_id'])){
 
 
       <div class="container mx-auto" >
-        <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mt-4">
+        <div class="grid grid-cols-2 lg:grid-cols-4 gap-2 mt-4">
 
         <?php foreach ($allZoos as $zoo) : ?>
-        <div class="bg-white rounded-lg shadow-lg m-2 zooSelectionCard">
-          <form action="./zooPage.php" method="get" class="">
-            <div class="p-4">
-            <p class="text-xl font-semibold uppercase text-phosph text-green-1 text-center mb-2"><?=$zoo->getName()?></p>
-              <p class="text-lan text-green-1 text-center font-semibold">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+          <div class="rounded-lg shadow-lg m-2 text-green-1 border border_green-1">
+            <div class="px-4">
+              <p class="text-4xl font-semibold uppercase text-center text-phosph">
+                <?=$zoo->getName()?>
+              </p>
+              <p class="text-lg font-bold text-center text-phosph mb-2">
+                Jour <?= $zoo->getDay() ?>
+              </p>
+
+              <div>
+                <ul class="text-base mb-2 items-center">
+                  <li class="text-xl text-lan text-green-1 text-center font-semibold">
+                  💰 : <?= $zoo->getBudget() ?>
+                  </li>
+                  <li class="text-lan text-green-1 text-center font-semibold">
+                    <?= $zooManager->findCountEnclosures($zoo->getId()) ?> enclos
+                  </li>
+                  <li class="text-lan text-green-1 text-center font-semibold">
+                    <?= $zooManager->findCountAnimals($zoo->getId()) ?>
+                    <?= $zooManager->findCountAnimals($zoo->getId())>1? ' animaux' : ' animal' ?> 
+                  </li>
+                  <li class="text-lan text-green-1 text-center font-semibold">
+                    <?= $zooManager->findCountHungryAnimals($zoo->getId()) ?>
+                    <?= $zooManager->findCountHungryAnimals($zoo->getId())>1? ' animaux affamés' : ' animal affamé' ?> 
+                  </li>
+                  <li class="text-lan text-green-1 text-center font-semibold">
+                    <?= $zooManager->findCountSickAnimals($zoo->getId()) ?>
+                    <?= $zooManager->findCountSickAnimals($zoo->getId())>1? ' animaux malades' : ' animal malade' ?>
+                  </li>
+                </ul>                
+              </div>
+          
             </div>
+
             <div class="flex justify-center">
-              <input type="hidden" name="zoo_id" value="<?=$zoo->getId()?>">
-              <button class="bg-emerald-800 bg-green-1 text-white font-bold py-2 px-4 m-2 rounded w-l" type="submit">Choisir</button>
+                <button class="bg-emerald-800 bg-green-1 text-white font-bold py-2 px-4 m-2 rounded w-l text-lan" >
+                  <a href="./zooPage.php?zoo_id=<?=intval($zoo->getId())?> ">Choisir</a>
+                </button>
             </div>
-          </form>
-        </div>
+          
+            <div class="flex justify-center">
+                <button class="bg-orange-700 bg-green-1 text-white font-bold py-2 px-4 m-2 rounded w-l text-lan" >
+                  <a href="./traitments/deleteZoo.php?zoo_id=<?=intval($zoo->getId())?> ">Supprimer</a>
+                </button>
+            </div>
+          
+          </div>
 
         <?php endforeach; ?>
-        
         </div>
       </div>
     </div>

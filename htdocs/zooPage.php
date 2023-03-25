@@ -1,6 +1,5 @@
 <?php
 require_once("./config/autoload.php");
-
 $db = require_once("./config/db.php");
 
 require_once("./config/header.php");
@@ -47,7 +46,7 @@ if (isset($_POST['zooName'])){
 
 ?>
 
-<nav class="flex items-center justify-between flex-wrap bg-green-1 p-6">
+<nav class="flex items-center justify-between flex-wrap bg-green-1 px-6 py-3 w-auto">
   <div class="flex items-center flex-shrink-0 text-white-1 text-phosph">
     <img class="w-10 mr-2 rounded" src="./assets/images/logos/Zoo-logo.png" alt="Logo">
     <span class="font-semibold text-3xl tracking-tight">PHP ZOO</span>
@@ -71,9 +70,7 @@ if (isset($_POST['zooName'])){
     </div>
   </div>
 </nav>
-<?php 
 
-?>
 <section id="allEnclosures">
 
   <div id="zooPresentation" class="flex flex-col items-center justify-center mt-6 mb-5 text-green-1 text-phosph">
@@ -101,9 +98,9 @@ if (isset($_POST['zooName'])){
     </p>
   </div>
 
-  <div id="employeeChoice" class="row flex">
+  <div id="subtitle" class="row flex">
 
-    <div class="w-1/3">
+    <div id="employeeChoice" class="w-1/3">
       <div id="employeesDiv" class="">
 
         <h2 class="text-xl text-green-1 font-bold text-center mb-4">Choisis l'employé actif</h2>
@@ -183,8 +180,8 @@ if (isset($_POST['zooName'])){
               <li class="text-lan text-green-1 text-center font-semibold">
                 <div class="text-lan text-green-1 font-semibold flex flex-row items-center justify-center">
                   <span class="mr-2">Propreté :</span>
-                  <div class="w-8 mt-0 bg-amber-200 rounded-full h-1.5">
-                    <div class="<?= $enclosure->getCleanliness()>5? 'bg-green-1' : 'bg-orange-700'?> h-1.5 rounded-full" style="width: <?= $enclosure->getCleanliness() * 10 ?>%">
+                  <div class="w-8 mt-0 bg-stone-300 rounded-full h-1.5" title="<?= $enclosure->getCleanliness() ?>">
+                    <div class="<?= $enclosure->getCleanliness()>6.8? 'bg-green-1' : ($enclosure->getCleanliness()>4.5? 'bg-amber-500': 'bg-orange-700')?> h-1.5 rounded-full" style="width: <?= $enclosure->getCleanliness() * 10 ?>%">
                     </div>
                   </div>
                 </div>

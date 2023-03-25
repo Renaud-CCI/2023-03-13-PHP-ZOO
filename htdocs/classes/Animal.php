@@ -13,6 +13,7 @@ class Animal {
     protected string $genderSymbol;
     protected string $species;
     protected int $dead;
+    protected int $enclosure_id;
 
     public function __construct(array $data){
         $this->hydrate($data);
@@ -170,6 +171,16 @@ class Animal {
 
     public function setDead($dead){
         $this->dead = $dead;
+
+        return $this;
+    }
+
+    public function getEnclosure_id(){
+        return $this->enclosure_id;
+    }
+
+    public function setEnclosure_id($enclosure_id){
+        $this->enclosure_id = $enclosure_id;
 
         return $this;
     }

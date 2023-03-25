@@ -66,24 +66,22 @@ class ZooManager {
     }
 
     public function findAllAnimalsOfZoo(int $zoo_id){
-        $query = $this->db->prepare('   SELECT *
+        $query = $this->db->prepare('   SELECT animals.id, animals.enclosure_id, animals.name, animals.species, animals.sex, animals.weight, animals.height, animals.birthday, animals.isHungry, animals.isSleppy, animals.isSick, animals.dead
                                         FROM animals
                                         INNER JOIN enclosures
                                         ON animals.enclosure_id = enclosures.id
                                         WHERE enclosures.zoo_id = :zoo_id');
-        $query->execute(['zoo_id' => $zoo_id,]);
-        
-        $allAnimalsData = $query->fetchAll(PDO::FETCH_ASSOC); 
+        $query->execute([':zoo_id' => $zoo_id]);
 
-        $allAnimalsAsObjects = [];        
+        $allAnimalsData = $query->fetchAll(PDO::FETCH_ASSOC); 
+        
+        $allAnimalsAsObjects = [];  
         
         foreach ($allAnimalsData as $animalData) {
             $animalAsObject = new $animalData['species']($animalData);
             array_push($allAnimalsAsObjects, $animalAsObject);
         }
         
-
-
         return $allAnimalsAsObjects;       
     }
 
@@ -169,6 +167,12 @@ class ZooManager {
                                         WHERE id = :id');
         $query->execute([   'id' => $id,
                             'day' => $day]);
+    }
+
+    public function deleteZooInDB($zoo_id){
+        $query = $this->db->prepare('   DELETE FROM zoos 
+                                        WHERE id = :id');
+        $query->execute([   'id' => $zoo_id]);       
     }
 
     // Fonctions sans rapport avec la db

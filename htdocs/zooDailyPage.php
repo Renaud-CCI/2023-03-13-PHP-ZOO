@@ -21,16 +21,21 @@ $allEnclosures = $enclosureManager->findAllEnclosuresOfZoo($zoo->getId());
 
 
 // calcul des entrées
-$adultsEntrancePrice = 10;
-$childrenEntrancePrice = 6 ;
+$adultsEntrancePrice = 12;
+$childrenEntrancePrice = 8 ;
 $entrances = 0;
 
 foreach ($allAnimalsOfZooAsObject as $animal){
-    $animalEnclosureCleanliness = ($animalManager->findEnclosureCleanlinessOfAnAnimal($animal->getId()))/10;
-    $entrances += rand(0,$animal->getPrice()/50) * $animalEnclosureCleanliness;
+    $animalEnclosure = $enclosureManager->findEnclosure($animal->getEnclosure_id());
+
+    $animalEnclosureCleanlinessRate = ($animalEnclosure->getCleanliness()/10);
+
+    $entrances += round(rand(0,$animal->getPrice()/50) * $animalEnclosureCleanlinessRate,1);
+
 }
 
 $entrances=ceil($entrances/2)*2;
+
 
 $adultsEntrances = round(rand($entrances/2, $entrances),0, PHP_ROUND_HALF_EVEN);
 $childrenEntrances = $entrances - $adultsEntrances;
@@ -50,37 +55,39 @@ if (isset($_GET['dailyGain'])){
     // updates zoo
     $zooManager->updateBudget($zoo->getId(), $zoo->getBudget() + $_GET['dailyGain']);
     $zooManager->updateDay($zoo->getId(), $zoo->getDay() + 1);
-
+    
     // updates employee actions
     foreach ($zoo->getEmployees_id() as $employeeId){
         $employeeManager->updateActions($employeeId, 10);
-        }
-
+    }
+    
     // update de la propreté des enclos
     foreach ($allEnclosures as $enclosure){
-        $enclosureCleanliness = $enclosure->getCleanliness() - rand(0,3);
-        $enclosureCleanliness < 0? $enclosureCleanliness = 0: $enclosureCleanliness=$enclosureCleanliness;
-        $enclosureManager->updateCleanliness($enclosure->getId(), $enclosureCleanliness);
+        $enclosureCountAnimals = $enclosureManager->findCountAnimals($enclosure->getId());
+        if ($enclosureCountAnimals > 0){
+            $enclosureCleanliness = $enclosure->getCleanliness() - (rand(0,30)/10);
+            $enclosureCleanliness < 0? $enclosureCleanliness = 0: $enclosureCleanliness=$enclosureCleanliness;
+            $enclosureManager->updateCleanliness($enclosure->getId(), $enclosureCleanliness);
+        }
     }
-
+    
     // updates animals properties  
     $deadAnimals = 0;  
     foreach ($allAnimalsOfZooAsObject as $animal){
         $animalSatiation = $animal->getIsHungry() - (rand(0,30)/10);
         $animalSatiation < 0? $animalSatiation = 0: $animalSatiation=$animalSatiation;
 
-        $animalHealth = $animal->getIsSick() - (rand(0,(10-$animalSatiation)*10)/10);
+        $animalHealth = $animal->getIsSick() - rand(0,(100-(round($animalSatiation)*10)))/10;
         if ($animalHealth < 0){
             $animalHealth = 0;
             $animalManager->updateDeadAnimal($animal->getId());
             $deadAnimals ++;
         }
+        
+        $animalManager->updateIsHungry($animal->getId(), $animalSatiation);
+        $animalManager->updateIsSick($animal->getId(), $animalHealth);
 
-        prettyDump($animalSatiation);        
-        prettyDump($animalHealth);        
-        var_dump($animalManager->updateIsHungry($animal->getId(), $animalSatiation));
-        var_dump($animalManager->updateIsSick($animal->getId(), $animalHealth));
-        die;
+
     }
 
     //renvoi vers DailyPage si animal mort, sinon retour Zoo au jour suivant

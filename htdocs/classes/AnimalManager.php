@@ -31,14 +31,11 @@ class AnimalManager {
     }
 
     public function findAnimal(int $id){
-        $query = $this->db->prepare('SELECT * FROM animal
+        $query = $this->db->prepare('SELECT * FROM animals
                                     WHERE id = :id');
         $query->execute(['id' => $id,]);
 
         $animalData = $query->fetch(PDO::FETCH_ASSOC);
-
-        // var_dump($employeeData);
-        // die;
           
         return new $animalData['species']($animalData);
                    
