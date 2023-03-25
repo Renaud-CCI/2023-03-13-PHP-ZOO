@@ -1,7 +1,7 @@
 <?php 
-session_start();
 
-$_SESSION['employee_id'] = $_GET['employee_id'];
+setcookie("employee_id", intval($_GET['employee_id']), time()+(3600*24), '/');
+
 
 header('Location:../zooPage.php');
 

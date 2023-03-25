@@ -60,7 +60,7 @@ foreach (array_unique($allFreeEmployeesId) as $employeeId){
     </div>
     <div id="menu" class="w-full lg:w-auto lg:flex-grow lg:flex lg:items-center lg:justify-end lg:bg-green-1 lg:p-2 lg:rounded lg:block hidden">
       <div class="lg:flex lg:items-center">
-        <a href="./index.php" class="block mt-4 lg:inline-block lg:mt-0 text-white-1  hover:text-white mr-4 text-end" style="display:<?= $createZooDivDisplay ?>">
+        <a href="./traitments/cookieSuppr.php" class="block mt-4 lg:inline-block lg:mt-0 text-white-1  hover:text-white mr-4 text-end" style="display:<?= $createZooDivDisplay ?>">
           Accueil
         </a>
         <a href="./traitments/sessionDestroy.php" class="block mt-4 lg:inline-block lg:mt-0 text-white-1  hover:text-white mr-4 text-end">
@@ -79,7 +79,7 @@ foreach (array_unique($allFreeEmployeesId) as $employeeId){
       
 
       <p class="text-3xl font-bold text-center m-2 text-green-1 text-phosph">Choisis un employé</p>
-      <div class="grid grid-cols-3 sm:grid-cols-5 gap-4">
+      <div class="grid grid-cols-3 gap-4">
         <?php foreach ($allFreeEmployeesAsObject as $employee) : ?>
                 
 
@@ -91,6 +91,7 @@ foreach (array_unique($allFreeEmployeesId) as $employeeId){
             <ul class="text-sm mt-2 items-center">
               <li class="text-lan text-green-1 text-center font-semibold"><?=$employee->getAge()?> ans</li>
               <li class="flex justify-center text-lan text-green-1 text-center font-semibold">Sexe : <img src="<?=$employee->getGenderSymbol()?>" alt="<?=$employee->getSex()?>" class="w-4 h-4 inline-block ml-1"></li>
+              <li class="flex justify-center text-lan text-green-1 text-center font-semibold">Salaire : <?= $employee->getSalary() ?>/j</li>
 
             </ul>
           </label>

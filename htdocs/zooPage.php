@@ -1,5 +1,6 @@
 <?php
 require_once("./config/autoload.php");
+
 $db = require_once("./config/db.php");
 
 require_once("./config/header.php");
@@ -7,6 +8,7 @@ require_once("./config/header.php");
 function prettyDump($data) {
     highlight_string("<?php\n\$data =\n" . var_export($data, true) . ";\n?>");
 }
+
 
 // connections à la db
 $zooManager = new ZooManager($db);
@@ -27,8 +29,8 @@ $zoo = $zooManager->findZoo($_SESSION['zoo_id']);
 $isEmployee = "⚠️ Choisis un employé pour gérer tes enclos ! ⚠️";
 $isEmployeeColor = "text-orange-700";
 
-if (isset($_SESSION['employee_id'])){
-  $choosenEmployee = $employeeManager->findEmployee(intval($_SESSION['employee_id']));
+if (isset($_COOKIE['employee_id'])){
+  $choosenEmployee = $employeeManager->findEmployee($_COOKIE['employee_id']);
 
   $isEmployee = $choosenEmployee->getName() . " va bosser pour toi";
   $isEmployeeColor = "text-green-1";
@@ -69,7 +71,9 @@ if (isset($_POST['zooName'])){
     </div>
   </div>
 </nav>
+<?php 
 
+?>
 <section id="allEnclosures">
 
   <div id="zooPresentation" class="flex flex-col items-center justify-center mt-6 mb-5 text-green-1 text-phosph">
@@ -108,11 +112,12 @@ if (isset($_POST['zooName'])){
           <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
             <?php foreach ($zoo->getEmployees_id() as $employeeId) : ?>
               <?php $employee = $employeeManager->findEmployee(intval($employeeId)); ?>
-              <div class="inline-block w-20 mx-auto">
+              <div class="inline-block w-20 mx-auto <?= isset($_COOKIE['employee_id'])? ($_COOKIE['employee_id'] == $employee->getId() ? 'border border-2 border_green-1 rounded-full' : '') : '' ?>">
                 <input class="employee-input hidden" id="<?=$employee->getId()?>" type="radio" name="employeeId" value="<?=$employee->getId()?>" required>
                 <label class="flex flex-col p-2 cursor-pointer bg-white shadow-lg rounded-full text-center text-lan" for="<?=$employee->getId()?>" onclick="window.location.href = './traitments/chooseEmployee.php?employee_id=<?=$employee->getId()?>'">
-                  <img src="https://api.dicebear.com/5.x/personas/svg?seed=<?= $employee->getName() ?>" class="mx-auto w-10">
+                  <img src="https://api.dicebear.com/5.x/personas/svg?seed=<?= $employee->getName() ?>" class="mx-auto w-16">
                   <?=$employee->getName()?>
+                  <p class="text-xs"><?=$employee->getActions()?> 🛠️</p>
                 </label>
               </div>
             <?php endforeach; ?>
@@ -165,15 +170,25 @@ if (isset($_POST['zooName'])){
   <p class="text-3xl font-bold text-center mt-10 mb-2 text-green-1 text-phosph">Gères tes enclos !</p>
   <p class="text-xl font-bold text-center mb-4 <?= $isEmployeeColor ?> text-phosph"><?= $isEmployee ?></p>
 
-  <div id="enclosureDiv" class="w-full mx-auto max-w-screen-xl">
+  <div id="enclosuresDiv" class="w-full mx-auto max-w-screen-xl">
     <div class="grid grid-cols-3 lg:grid-cols-6 gap-1 text-center justify-center">
       <?php foreach ($allEnclosures as $enclosure) : ?>
-        <a class="inline-block" href="<?= isset($_SESSION['employee_id'])? './enclosurePage.php?enclosure_id='.$enclosure->getId() : ''?>">
+        
+        <a class="inline-block" href="<?= isset($_COOKIE['employee_id'])? './enclosurePage.php?enclosure_id='.$enclosure->getId().'&employee_id='.$_COOKIE['employee_id'] : ''?>">
 
-          <div class="mx-2 p-1 cursor-pointer bg-white rounded-lg shadow-lg">        
+          <div class="mx-2 my-2 p-1 cursor-pointer bg-white rounded-lg shadow-lg">        
             <span class="text-xl text-center font-semibold uppercase text-phosph text-green-1"><?=$enclosure->getName()?></span>
             <img src="<?= $enclosure->getAvatar() ?>" class="mx-auto w-20">
             <ul class="text-xs lg:text-sm mt-2 items-center">
+              <li class="text-lan text-green-1 text-center font-semibold">
+                <div class="text-lan text-green-1 font-semibold flex flex-row items-center justify-center">
+                  <span class="mr-2">Propreté :</span>
+                  <div class="w-8 mt-0 bg-amber-200 rounded-full h-1.5">
+                    <div class="<?= $enclosure->getCleanliness()>5? 'bg-green-1' : 'bg-orange-700'?> h-1.5 rounded-full" style="width: <?= $enclosure->getCleanliness() * 10 ?>%">
+                    </div>
+                  </div>
+                </div>
+              </li>
               <li class="text-lan text-green-1 text-center font-semibold">
                 <?= $enclosureManager->findCountAnimals($enclosure->getId()) ?>/<?= $enclosure->getAccount() ?>
                 <?= $enclosureManager->findCountAnimals($enclosure->getId())>1? ' animaux' : ' animal' ?>
@@ -192,7 +207,6 @@ if (isset($_POST['zooName'])){
               </li>
             </ul>
           </div>
-
         </a>    
       <?php endforeach; ?>
     </div>
@@ -200,18 +214,13 @@ if (isset($_POST['zooName'])){
 
 
   <div class="flex flex-col lg:flex-row justify-center items-center m-10">
-        <button class="text-xl bg-orange-700 text-white-1 font-bold py-1 px-2 rounded w-80 h-9 mx-2 mb-2" onclick="window.location.href = './zooPage.php';">
-          Passer au jour suivant
-        </button>
-      </div>
-
+    <button class="text-xl bg-orange-700 text-white-1 font-bold py-1 px-2 rounded w-80 h-9 mx-2 mb-2" onclick="window.location.href = './zooDailyPage.php';">
+      Passer au jour suivant
+    </button>
+  </div>
 
 
 </section>
-
-  <!-- <?= prettyDump($zoo);?>
-  <?=prettyDump($_SESSION);?> -->
-
 
 
 <?php

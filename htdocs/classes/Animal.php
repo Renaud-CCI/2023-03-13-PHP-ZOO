@@ -6,15 +6,17 @@ class Animal {
     protected string $sex;
     protected float $weight;
     protected float $height;
-    protected float $age;
+    protected int $birthday;
     protected float $isHungry;
     protected bool $isSleppy;
     protected float $isSick;
     protected string $genderSymbol;
     protected string $species;
+    protected int $dead;
 
     public function __construct(array $data){
         $this->hydrate($data);
+
 
         if (isset($data["sex"])){
             switch ($data["sex"]){
@@ -41,12 +43,12 @@ class Animal {
             // si la clef est id le setter est setId
             // il suffit de mettre la 1ere lettre de key en Maj et de le préfixer par set
             $method = 'set'.ucfirst($key);
-
             // On vérifie que le setter correspondant existe
             if (method_exists($this, $method)) {
                 // S'il existe, on l'appelle
                 $this->$method($value);
             }
+
         }
     }
 
@@ -78,16 +80,6 @@ class Animal {
 
     public function setHeight($height){
         $this->height = $height;
-
-        return $this;
-    }
-
-    public function getAge(){
-        return $this->age;
-    }
-
-    public function setAge($age){
-        $this->age = $age;
 
         return $this;
     }
@@ -158,6 +150,26 @@ class Animal {
 
     public function setSpecies($species){
         $this->species = $species;
+
+        return $this;
+    }
+
+    public function getBirthday(){
+        return $this->birthday;
+    }
+
+    public function setBirthday($birthday){
+        $this->birthday = $birthday;
+
+        return $this;
+    }
+
+    public function getDead(){
+        return $this->dead;
+    }
+
+    public function setDead($dead){
+        $this->dead = $dead;
 
         return $this;
     }

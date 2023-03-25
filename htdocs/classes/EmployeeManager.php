@@ -37,6 +37,14 @@ class EmployeeManager {
         return $allEmployeesAsObjects;       
     }
 
+    public function updateActions(int $employeeId, int $employeeActions){
+        $query = $this->db->prepare('   UPDATE employees 
+                                        SET actions = :actions 
+                                        WHERE id = :id');
+        $query->execute([   'id' => $employeeId,
+                            'actions' => $employeeActions]);
+    }
+
         
     // GETTERS & SETTERS
     public function setDb($db){

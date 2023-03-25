@@ -65,6 +65,45 @@ class ZooManager {
         return $count;             
     }
 
+    public function findAllAnimalsOfZoo(int $zoo_id){
+        $query = $this->db->prepare('   SELECT *
+                                        FROM animals
+                                        INNER JOIN enclosures
+                                        ON animals.enclosure_id = enclosures.id
+                                        WHERE enclosures.zoo_id = :zoo_id');
+        $query->execute(['zoo_id' => $zoo_id,]);
+        
+        $allAnimalsData = $query->fetchAll(PDO::FETCH_ASSOC); 
+
+        $allAnimalsAsObjects = [];        
+        
+        foreach ($allAnimalsData as $animalData) {
+            $animalAsObject = new $animalData['species']($animalData);
+            array_push($allAnimalsAsObjects, $animalAsObject);
+        }
+        
+
+
+        return $allAnimalsAsObjects;       
+    }
+
+    public function findAllDeadAnimals(int $zoo_id){
+        $query = $this->db->query('   SELECT *
+                                        FROM animals
+                                        WHERE dead = 1');
+        
+        $allDeadAnimalsData = $query->fetchAll(PDO::FETCH_ASSOC); 
+
+        $allDeadAnimalsAsObjects = [];        
+        
+        foreach ($allDeadAnimalsData as $animalData) {
+            $animalAsObject = new $animalData['species']($animalData);
+            array_push($allDeadAnimalsAsObjects, $animalAsObject);
+        }
+        
+        return $allDeadAnimalsAsObjects;       
+    }
+
     public function findCountAnimals(int $zoo_id){
         $query = $this->db->prepare('   SELECT COUNT(animals.id)
                                         FROM animals
@@ -122,6 +161,34 @@ class ZooManager {
                                         WHERE id = :id');
         $query->execute([   'id' => $id,
                             'budget' => $budget]);
+    }
+
+    public function updateDay(int $id, int $day){
+        $query = $this->db->prepare('   UPDATE zoos 
+                                        SET day = :day 
+                                        WHERE id = :id');
+        $query->execute([   'id' => $id,
+                            'day' => $day]);
+    }
+
+    // Fonctions sans rapport avec la db
+    public function echoDeathSentence(){
+        $array = [
+            "Une petite fille a pleuré devant ce spectacle",
+            "Bonne nouvelle : les frais d'équarrissage ne sont pas intégrés au jeu !",
+            "Cela veut dire qu'iel ne vit plus",
+            "Merci d'observer une minute de silence",
+            "Un monument sera érigé en son honneur",
+            "Nous offrons une glace au petit garçon témoin de son dernier souffle",
+            "Rappelons-nous à quel point la vie est précieuse",
+            "De toute façon personne ne l'aimait",
+            "Une intoxication alimentaire n'est pas à écarter",
+            "Pas de bol !",
+            "Probablement par manque de soins"
+        ];
+
+        return $array[array_rand($array)];
+
     }
 
     // GETTERS & SETTERS

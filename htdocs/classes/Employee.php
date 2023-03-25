@@ -7,6 +7,8 @@ class Employee {
     private float $age;
     private string $sex;
     private string $genderSymbol;
+    private int $actions;
+    private int $salary = 100;
 
     public function __construct(array $data){
         // On fait une boucle avec le tableau de données
@@ -105,6 +107,26 @@ class Employee {
 
     public function setGenderSymbol($genderSymbol){
         $this->genderSymbol = $genderSymbol;
+
+        return $this;
+    }
+
+    public function getActions(){
+        return $this->actions;
+    }
+
+    public function setActions($actions){
+        $this->actions = $actions;
+
+        return $this;
+    }
+
+    public function getSalary(){
+        return $this->salary;
+    }
+
+    public function setSalary($salary){
+        $this->salary = $salary;
 
         return $this;
     }

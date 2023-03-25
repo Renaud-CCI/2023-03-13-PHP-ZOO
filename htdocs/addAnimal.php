@@ -1,5 +1,6 @@
 <?php 
 require_once("./config/autoload.php");
+
 $db = require_once("./config/db.php");
 
 function prettyDump($data) {
@@ -53,7 +54,7 @@ if ($enclosure->getAnimals_type() == 'default'){
 </div>
 <div id="menu" class="w-full lg:w-auto lg:flex-grow lg:flex lg:items-center lg:justify-end lg:bg-green-1 lg:p-2 lg:rounded lg:block hidden">
     <div class="lg:flex lg:items-center">
-    <a href="./index.php" class="block mt-4 lg:inline-block lg:mt-0 text-white-1  hover:text-white mr-4 text-end" style="display:<?= $createZooDivDisplay ?>">
+    <a href="./traitments/cookieSuppr.php" class="block mt-4 lg:inline-block lg:mt-0 text-white-1  hover:text-white mr-4 text-end" style="display:<?= $createZooDivDisplay ?>">
         Accueil
     </a>
     <a href="./zooPage.php" class="block mt-4 lg:inline-block lg:mt-0 text-white-1  hover:text-white mr-4 text-end">
@@ -119,6 +120,7 @@ if ($enclosure->getAnimals_type() == 'default'){
 
     <input type="hidden" name="enclosure_id" value="<?=$_GET['enclosure_id']?>">
     <input type="hidden" name="animal_price" value="<?= $enclosure->getAnimalPrice() ?>">
+    <input type="hidden" name="birthday" value="<?= $zoo->getDay() ?>">
     
     <div class="flex flex-col items-center mt-6">
         <button class="bg-green-1 text-white-1 font-bold py-2 px-4 rounded w-64">
