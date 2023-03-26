@@ -7,8 +7,9 @@ class Employee {
     private float $age;
     private string $sex;
     private string $genderSymbol;
-    private int $actions;
+    private int $default_actions;
     private int $salary = 100;
+    private int $actions;
 
     public function __construct(array $data){
         // On fait une boucle avec le tableau de données
@@ -56,6 +57,7 @@ class Employee {
             }
               
         }
+
 
     }
 
@@ -127,6 +129,16 @@ class Employee {
 
     public function setSalary($salary){
         $this->salary = $salary;
+
+        return $this;
+    }
+
+    public function getDefault_actions(){
+        return $this->default_actions;
+    }
+
+    public function setDefault_actions($default_actions){
+        $this->default_actions = $default_actions;
 
         return $this;
     }

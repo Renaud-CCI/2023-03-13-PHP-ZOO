@@ -45,7 +45,7 @@ $childrenEntrancesGain = $childrenEntrances * $childrenEntrancePrice ;
 
 
 // calculs des coûts
-$employeesCost = count($zoo->getEmployees_id()) * 100;
+$employeesCost = count($zooManager->findZooEmployees($zoo->getId())) * 100;
 
 // Gains totaux
 $dailyGain = $adultsEntrancesGain + $childrenEntrancesGain - $employeesCost;
@@ -57,8 +57,8 @@ if (isset($_GET['dailyGain'])){
     $zooManager->updateDay($zoo->getId(), $zoo->getDay() + 1);
     
     // updates employee actions
-    foreach ($zoo->getEmployees_id() as $employeeId){
-        $employeeManager->updateActions($employeeId, 10);
+    foreach ($zooManager->findZooEmployees($zoo->getId()) as $employee){
+        $employeeManager->updateActions($employee->getId(), 10);
     }
     
     // update de la propreté des enclos
@@ -110,13 +110,13 @@ require_once("./config/header.php");
             <div class="flex justify-center">
                 <div class="text-center">
                     <h1 class="text-5xl font-bold mt-8 m-4 text-lan text-orange-700"><?=$deadAnimal->getName()?> est mort(e) !</h1>
-                    <span class="text-lg text-phosp text-green-1"><?= $zooManager->echoDeathSentence() ?></span>
+                    <span class="text-lg text-phosp text-emerald-900"><?= $zooManager->echoDeathSentence() ?></span>
                 </div>
             </div>
         <?php endforeach ?>
 
         <div id="followingDay" class="flex flex-col lg:flex-row justify-center items-center m-10">
-            <button class="w-36 text-xl bg-green-1 text-white-1 font-bold py-1 px-2 rounded h-12 mx-2 mb-2" onclick="window.location.href = './zooPage.php';">
+            <button class="w-36 text-xl bg-emerald-900 text-white-1 font-bold py-1 px-2 rounded h-12 mx-2 mb-2" onclick="window.location.href = './zooPage.php';">
                 Valider
             </button>
         </div>
@@ -127,14 +127,14 @@ require_once("./config/header.php");
 
 <section id="pageBody" class="bg-white-1 flex flex-col justify-center items center mt-6">
 
-    <h1 class="text-6xl text-phosph text-green-1 font-bold text-center mb-4"><?= $zoo->getName() ?></h1>
-    <p class="text-3xl text-phosph text-green-1 font-bold text-center mb-2"> Jour 
+    <h1 class="text-6xl text-phosph text-emerald-900 font-bold text-center mb-4"><?= $zoo->getName() ?></h1>
+    <p class="text-3xl text-phosph text-emerald-900 font-bold text-center mb-2"> Jour 
       <?= $zoo->getDay() ?>
     </p>
 
-    <div id="entrancesTable" class="w-11/12 sm:w-2/3 lg:w-1/2 rounded-lg overflow-hidden mx-auto text-2xl text-lan text-green-1 mt-8 mb-4">
+    <div id="entrancesTable" class="w-11/12 sm:w-2/3 lg:w-1/2 rounded-lg overflow-hidden mx-auto text-2xl text-lan text-emerald-900 mt-8 mb-4">
         <table class="w-full text-center border border_green-1 rounded-lg">
-            <thead class="bg-green-1 text-white-1">
+            <thead class="bg-emerald-900 text-white-1">
             <tr>
                 <th colspan="4">Visites de <?= $zoo->getName() ?> - Jour <?= $zoo->getDay() ?></th>
             </tr>
@@ -169,9 +169,9 @@ require_once("./config/header.php");
     </div>
 
 
-    <div id="expensesTable" class="w-11/12 sm:w-2/3 lg:w-1/2 rounded-lg overflow-hidden mx-auto text-2xl text-lan text-green-1 my-4">
+    <div id="expensesTable" class="w-11/12 sm:w-2/3 lg:w-1/2 rounded-lg overflow-hidden mx-auto text-2xl text-lan text-emerald-900 my-4">
         <table class="w-full text-center border border_green-1">
-            <thead class="bg-green-1 text-white-1">
+            <thead class="bg-emerald-900 text-white-1">
                 <tr>
                     <th colspan="3">Dépenses de fin de journée</th>
                 </tr>
@@ -184,16 +184,16 @@ require_once("./config/header.php");
                 </tr>
                 <tr>
                     <td>Employés</td>
-                    <td><?= count($zoo->getEmployees_id($zoo->getId())) ?></td>
+                    <td><?= count($zooManager->findZooEmployees($zoo->getId())) ?></td>
                     <td><?= $employeesCost ?> 💰</td>
                 </tr>
             </tbody>
         </table>
     </div>
 
-    <div id="dailyGainTable"  class="w-11/12 sm:w-2/3 lg:w-1/2 rounded-lg overflow-hidden mx-auto text-2xl text-lan text-green-1 my-4">
+    <div id="dailyGainTable"  class="w-11/12 sm:w-2/3 lg:w-1/2 rounded-lg overflow-hidden mx-auto text-2xl text-lan text-emerald-900 my-4">
         <table class="w-full text-center border border_green-1">
-            <thead class="bg-green-1 text-white-1">
+            <thead class="bg-emerald-900 text-white-1">
                 <tr>
                     <th colspan="1">Gains jour <?= $zoo->getDay() ?></th>
                 </tr>
@@ -207,7 +207,7 @@ require_once("./config/header.php");
     </div>
 
     <div id="followingDay" class="flex flex-col lg:flex-row justify-center items-center m-10">
-            <button class="w-1/2 text-3xl bg-green-1 text-white-1 font-bold py-1 px-2 rounded w-80 h-16 mx-2 mb-2" onclick="window.location.href = './zooDailyPage.php?dailyGain=<?=$dailyGain?>';">
+            <button class="w-1/2 text-3xl bg-emerald-900 text-white-1 font-bold py-1 px-2 rounded w-80 h-16 mx-2 mb-2" onclick="window.location.href = './zooDailyPage.php?dailyGain=<?=$dailyGain?>';">
                 Valider
             </button>
     </div>

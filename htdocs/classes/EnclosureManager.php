@@ -45,7 +45,7 @@ class EnclosureManager {
 
     public function findCountSickAnimals(int $enclosure_id){
         $query = $this->db->prepare('   SELECT COUNT(id) FROM animals
-                                        WHERE enclosure_id=:enclosure_id AND isSick<5');
+                                        WHERE enclosure_id=:enclosure_id AND isSick<=4.5');
         $query->execute(['enclosure_id' => $enclosure_id,]);
         $count = $query->fetchColumn();
         return $count;             

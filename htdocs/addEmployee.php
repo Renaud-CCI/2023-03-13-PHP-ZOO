@@ -1,5 +1,6 @@
 <?php 
 require_once("./config/autoload.php");
+var_dump($_SESSION);
 $db = require_once("./config/db.php");
 
 function prettyDump($data) {
@@ -14,37 +15,21 @@ $zoo = $zooManager->findZoo($_SESSION['zoo_id']);
 
 //Gestion de l'ajout d'un employé
 if (isset($_GET['employeeId'])){
-    $zooEmployees = $zoo->getEmployees_id();
-    $employeeIdToAdd = $_GET['employeeId'];
-    array_push($zooEmployees, $employeeIdToAdd);
-    $zooManager->updateZooEmployeesInDB($_SESSION['zoo_id'], $zooEmployees);
+    $zooManager->setZooEmployee($_SESSION['zoo_id'], $employeeManager->findEmployee($_GET['employeeId']));
     header('Location: ./zooPage.php');
 }
 
 
 
 //Création de la liste d'employés disponibles
-$allEmployeesInDb = $employeeManager->findAllEmployees();
-$allFreeEmployeesId = [];
-$allFreeEmployeesAsObject = [];
-
-foreach ($allEmployeesInDb as $employee){
-  if (in_array($employee->getId(), $zoo->getEmployees_id())){
-    continue;
-  }
-  array_push($allFreeEmployeesId, $employee->getId());
-}
-
-foreach (array_unique($allFreeEmployeesId) as $employeeId){
-    array_push($allFreeEmployeesAsObject, $employeeManager->findEmployee($employeeId));
-}
+$allFreeEmployeesForZoo = $zooManager->findAllFreeEmployeesForZoo($zoo->getId());
 
 
 ?>
 <?php require_once("./config/header.php"); ?>
 
 
-<nav class="flex items-center justify-between flex-wrap bg-green-1 px-6 py-3 w-auto">
+<nav class="flex items-center justify-between flex-wrap bg-emerald-900 px-6 py-3 w-auto">
 
     <div class="flex items-center flex-shrink-0 text-white-1 text-phosph">
       <img class="w-10 mr-2 rounded" src="./assets/images/logos/Zoo-logo.png" alt="Logo">
@@ -58,7 +43,7 @@ foreach (array_unique($allFreeEmployeesId) as $employeeId){
       </svg>
       </button>
     </div>
-    <div id="menu" class="w-full lg:w-auto lg:flex-grow lg:flex lg:items-center lg:justify-end lg:bg-green-1 lg:p-2 lg:rounded lg:block hidden">
+    <div id="menu" class="w-full lg:w-auto lg:flex-grow lg:flex lg:items-center lg:justify-end lg:bg-emerald-900 lg:p-2 lg:rounded lg:block hidden">
       <div class="lg:flex lg:items-center">
         <a href="./traitments/cookieSuppr.php" class="block mt-4 lg:inline-block lg:mt-0 text-white-1  hover:text-white mr-4 text-end" style="display:<?= $createZooDivDisplay ?>">
           Accueil
@@ -78,20 +63,20 @@ foreach (array_unique($allFreeEmployeesId) as $employeeId){
     <form action="./addEmployee.php" method="get" class="mx-auto w-full max-w-screen-sm">
       
 
-      <p class="text-3xl font-bold text-center m-2 text-green-1 text-phosph">Choisis un employé</p>
+      <p class="text-3xl font-bold text-center m-2 text-emerald-900 text-phosph">Choisis un employé</p>
       <div class="grid grid-cols-3 gap-4">
-        <?php foreach ($allFreeEmployeesAsObject as $employee) : ?>
+        <?php foreach ($allFreeEmployeesForZoo as $employee) : ?>
                 
 
         <div class="">
           <input class="employee-input hidden" id="<?=$employee->getId()?>" type="radio" name="employeeId" value="<?=$employee->getId()?>" required>
           <label class="flex flex-col p-2 cursor-pointer bg-white rounded-lg shadow-lg" for="<?=$employee->getId()?>">
-            <span class="text-xl text-center font-semibold uppercase text-phosph text-green-1"><?=$employee->getName()?></span>
+            <span class="text-xl text-center font-semibold uppercase text-phosph text-emerald-900"><?=$employee->getName()?></span>
             <img src="https://api.dicebear.com/5.x/personas/svg?seed=<?= $employee->getName() ?>" class="mx-auto w-20">
             <ul class="text-sm mt-2 items-center">
-              <li class="text-lan text-green-1 text-center font-semibold"><?=$employee->getAge()?> ans</li>
-              <li class="flex justify-center text-lan text-green-1 text-center font-semibold">Sexe : <img src="<?=$employee->getGenderSymbol()?>" alt="<?=$employee->getSex()?>" class="w-4 h-4 inline-block ml-1"></li>
-              <li class="flex justify-center text-lan text-green-1 text-center font-semibold">Salaire : <?= $employee->getSalary() ?>/j</li>
+              <li class="text-lan text-emerald-900 text-center font-semibold"><?=$employee->getAge()?> ans</li>
+              <li class="flex justify-center text-lan text-emerald-900 text-center font-semibold">Sexe : <img src="<?=$employee->getGenderSymbol()?>" alt="<?=$employee->getSex()?>" class="w-4 h-4 inline-block ml-1"></li>
+              <li class="flex justify-center text-lan text-emerald-900 text-center font-semibold">Salaire : <?= $employee->getSalary() ?>/j</li>
 
             </ul>
           </label>
@@ -102,7 +87,7 @@ foreach (array_unique($allFreeEmployeesId) as $employeeId){
       </div>
       
       <div class="flex flex-col items-center mt-6">
-        <button class="bg-green-1 text-white-1 font-bold py-2 px-4 rounded w-64">
+        <button class="bg-emerald-900 text-white-1 font-bold py-2 px-4 rounded w-64">
           Valider
         </button>
       </div>

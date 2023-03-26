@@ -1,5 +1,6 @@
 <?php
 require_once("./config/autoload.php");
+
 $db = require_once("./config/db.php");
 
 require_once("./config/header.php");
@@ -28,11 +29,11 @@ $zoo = $zooManager->findZoo($_SESSION['zoo_id']);
 $isEmployee = "⚠️ Choisis un employé pour gérer tes enclos ! ⚠️";
 $isEmployeeColor = "text-orange-700";
 
-if (isset($_COOKIE['employee_id'])){
-  $choosenEmployee = $employeeManager->findEmployee($_COOKIE['employee_id']);
+if (isset($_SESSION['employee_id'])){
+  $choosenEmployee = $employeeManager->findZooEmployee($_SESSION['employee_id']);
 
   $isEmployee = $choosenEmployee->getName() . " va bosser pour toi";
-  $isEmployeeColor = "text-green-1";
+  $isEmployeeColor = "text-emerald-900";
 }
 
 $allEnclosures = $enclosureManager->findAllEnclosuresOfZoo($_SESSION['zoo_id']);
@@ -46,7 +47,7 @@ if (isset($_POST['zooName'])){
 
 ?>
 
-<nav class="flex items-center justify-between flex-wrap bg-green-1 px-6 py-3 w-auto">
+<nav class="flex items-center justify-between flex-wrap bg-emerald-900 px-6 py-3 w-auto">
   <div class="flex items-center flex-shrink-0 text-white-1 text-phosph">
     <img class="w-10 mr-2 rounded" src="./assets/images/logos/Zoo-logo.png" alt="Logo">
     <span class="font-semibold text-3xl tracking-tight">PHP ZOO</span>
@@ -59,9 +60,9 @@ if (isset($_POST['zooName'])){
     </svg>
     </button>
   </div>
-  <div id="menu" class="w-full lg:w-auto lg:flex-grow lg:flex lg:items-center lg:justify-end lg:bg-green-1 lg:p-2 lg:rounded  lg:block hidden">
+  <div id="menu" class="w-full lg:w-auto lg:flex-grow lg:flex lg:items-center lg:justify-end lg:bg-emerald-900 lg:p-2 lg:rounded  lg:block hidden">
     <div class="lg:flex lg:items-center">
-      <a href="./index.php" class="block mt-4 lg:inline-block lg:mt-0 text-white-1  hover:text-white mr-4 text-end">
+      <a href="./traitments/cookieSuppr.php" class="block mt-4 lg:inline-block lg:mt-0 text-white-1  hover:text-white mr-4 text-end">
         Accueil
       </a>
       <a href="./traitments/sessionDestroy.php" class="block mt-4 lg:inline-block lg:mt-0 text-white-1  hover:text-white mr-4 text-end">
@@ -73,11 +74,11 @@ if (isset($_POST['zooName'])){
 
 <section id="allEnclosures">
 
-  <div id="zooPresentation" class="flex flex-col items-center justify-center mt-6 mb-5 text-green-1 text-phosph">
+  <div id="zooPresentation" class="flex flex-col items-center justify-center mt-6 mb-5 text-emerald-900 text-phosph">
     <?php if (isset ($_POST['modify']) && $_POST['modify']=='zooName') : ?>
       <form action="./zooPage.php" method="post">
         <input class="zooNameInput bg-transparent shadow appearance-none rounded w-48 mt-4 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="zooName" name="zooName" type="text" placeholder="nom du zoo" required>
-        <button class="bg-green-1 text-white-1 font-bold py-2 px-4 rounded w-20">
+        <button class="bg-emerald-900 text-white-1 font-bold py-2 px-4 rounded w-20">
           Valider
         </button>
       </form>
@@ -103,13 +104,12 @@ if (isset($_POST['zooName'])){
     <div id="employeeChoice" class="w-1/3">
       <div id="employeesDiv" class="">
 
-        <h2 class="text-xl text-green-1 font-bold text-center mb-4">Choisis l'employé actif</h2>
+        <h2 class="text-xl text-emerald-900 font-bold text-center mb-4">Choisis l'employé actif</h2>
 
         <form action="" method="get">
           <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
-            <?php foreach ($zoo->getEmployees_id() as $employeeId) : ?>
-              <?php $employee = $employeeManager->findEmployee(intval($employeeId)); ?>
-              <div class="inline-block w-20 mx-auto <?= isset($_COOKIE['employee_id'])? ($_COOKIE['employee_id'] == $employee->getId() ? 'border border-2 border_green-1 rounded-full' : '') : '' ?>">
+            <?php foreach ($zooManager->findZooEmployees($zoo->getId()) as $employee) : ?>
+              <div class="inline-block w-20 mx-auto <?= isset($_SESSION['employee_id'])? ($_SESSION['employee_id'] == $employee->getId() ? 'border border-2 border_green-1 rounded-full' : '') : '' ?>">
                 <input class="employee-input hidden" id="<?=$employee->getId()?>" type="radio" name="employeeId" value="<?=$employee->getId()?>" required>
                 <label class="flex flex-col p-2 cursor-pointer bg-white shadow-lg rounded-full text-center text-lan" for="<?=$employee->getId()?>" onclick="window.location.href = './traitments/chooseEmployee.php?employee_id=<?=$employee->getId()?>'">
                   <img src="https://api.dicebear.com/5.x/personas/svg?seed=<?= $employee->getName() ?>" class="mx-auto w-16">
@@ -128,21 +128,21 @@ if (isset($_POST['zooName'])){
 
       <div>
         <ul class="text-base mb-2 items-center">
-          <li class="text-xl text-lan text-green-1 text-center font-semibold">
+          <li class="text-xl text-lan text-emerald-900 text-center font-semibold">
           💰 : <?= $zoo->getBudget() ?>
           </li>
-          <li class="text-lan text-green-1 text-center font-semibold">
+          <li class="text-lan text-emerald-900 text-center font-semibold">
             <?= $zooManager->findCountEnclosures($zoo->getId()) ?> enclos
           </li>
-          <li class="text-lan text-green-1 text-center font-semibold">
+          <li class="text-lan text-emerald-900 text-center font-semibold">
             <?= $zooManager->findCountAnimals($zoo->getId()) ?>
             <?= $zooManager->findCountAnimals($zoo->getId())>1? ' animaux' : ' animal' ?> 
           </li>
-          <li class="text-lan text-green-1 text-center font-semibold">
+          <li class="text-lan text-emerald-900 text-center font-semibold">
             <?= $zooManager->findCountHungryAnimals($zoo->getId()) ?>
             <?= $zooManager->findCountHungryAnimals($zoo->getId())>1? ' animaux affamés' : ' animal affamé' ?> 
           </li>
-          <li class="text-lan text-green-1 text-center font-semibold">
+          <li class="text-lan text-emerald-900 text-center font-semibold">
             <?= $zooManager->findCountSickAnimals($zoo->getId()) ?>
             <?= $zooManager->findCountSickAnimals($zoo->getId())>1? ' animaux malades' : ' animal malade' ?>
           </li>
@@ -151,11 +151,11 @@ if (isset($_POST['zooName'])){
       </div>
 
       <div class="flex flex-col lg:flex-row justify-center items-center">
-        <button class="text-xs bg-emerald-800 bg-green-1 text-white-1 font-bold py-1 px-2 rounded w-40 h-9 mx-2 mb-2" onclick="window.location.href = './addEmployee.php?zoo_id=<?=$zoo->getId()?>';">
+        <button class="text-xs bg-emerald-800 bg-emerald-900 text-white-1 font-bold py-1 px-2 rounded w-40 h-9 mx-2 mb-2" onclick="window.location.href = './addEmployee.php?zoo_id=<?=$zoo->getId()?>';">
           Ajouter un employé
         </button>
 
-        <button class="text-xs bg-emerald-800 bg-green-1 text-white-1 font-bold py-1 px-2 rounded w-40 h-9 mx-2 mb-2" onclick="window.location.href = './addEnclosure.php?zoo_id=<?=$zoo->getId()?>';">
+        <button class="text-xs bg-emerald-800 bg-emerald-900 text-white-1 font-bold py-1 px-2 rounded w-40 h-9 mx-2 mb-2" onclick="window.location.href = './addEnclosure.php?zoo_id=<?=$zoo->getId()?>';">
           Ajouter un enclos
         </button>
       </div>
@@ -164,41 +164,41 @@ if (isset($_POST['zooName'])){
 
   </div>
 
-  <p class="text-3xl font-bold text-center mt-10 mb-2 text-green-1 text-phosph">Gères tes enclos !</p>
+  <p class="text-3xl font-bold text-center mt-10 mb-2 text-emerald-900 text-phosph">Gères tes enclos !</p>
   <p class="text-xl font-bold text-center mb-4 <?= $isEmployeeColor ?> text-phosph"><?= $isEmployee ?></p>
 
   <div id="enclosuresDiv" class="w-full mx-auto max-w-screen-xl">
     <div class="grid grid-cols-3 lg:grid-cols-6 gap-1 text-center justify-center">
       <?php foreach ($allEnclosures as $enclosure) : ?>
         
-        <a class="inline-block" href="<?= isset($_COOKIE['employee_id'])? './enclosurePage.php?enclosure_id='.$enclosure->getId().'&employee_id='.$_COOKIE['employee_id'] : ''?>">
+        <a class="inline-block" href="<?= isset($_SESSION['employee_id'])? './enclosurePage.php?enclosure_id='.$enclosure->getId().'&employee_id='.$_SESSION['employee_id'] : ''?>">
 
           <div class="mx-2 my-2 p-1 cursor-pointer bg-white rounded-lg shadow-lg">        
-            <span class="text-xl text-center font-semibold uppercase text-phosph text-green-1"><?=$enclosure->getName()?></span>
+            <span class="text-xl text-center font-semibold uppercase text-phosph text-emerald-900"><?=$enclosure->getName()?></span>
             <img src="<?= $enclosure->getAvatar() ?>" class="mx-auto w-20">
             <ul class="text-xs lg:text-sm mt-2 items-center">
-              <li class="text-lan text-green-1 text-center font-semibold">
-                <div class="text-lan text-green-1 font-semibold flex flex-row items-center justify-center">
+              <li class="text-lan text-emerald-900 text-center font-semibold">
+                <div class="text-lan text-emerald-900 font-semibold flex flex-row items-center justify-center">
                   <span class="mr-2">Propreté :</span>
                   <div class="w-8 mt-0 bg-stone-300 rounded-full h-1.5" title="<?= $enclosure->getCleanliness() ?>">
-                    <div class="<?= $enclosure->getCleanliness()>6.8? 'bg-green-1' : ($enclosure->getCleanliness()>4.5? 'bg-amber-500': 'bg-orange-700')?> h-1.5 rounded-full" style="width: <?= $enclosure->getCleanliness() * 10 ?>%">
+                    <div class="<?= $enclosure->getCleanliness()>6.8? 'bg-emerald-900' : ($enclosure->getCleanliness()>4.5? 'bg-amber-500': 'bg-orange-700')?> h-1.5 rounded-full" style="width: <?= $enclosure->getCleanliness() * 10 ?>%">
                     </div>
                   </div>
                 </div>
               </li>
-              <li class="text-lan text-green-1 text-center font-semibold">
+              <li class="text-lan text-emerald-900 text-center font-semibold">
                 <?= $enclosureManager->findCountAnimals($enclosure->getId()) ?>/<?= $enclosure->getAccount() ?>
                 <?= $enclosureManager->findCountAnimals($enclosure->getId())>1? ' animaux' : ' animal' ?>
               </li>
-              <li class="text-lan text-green-1 text-center font-semibold">
+              <li class="text-lan text-emerald-900 text-center font-semibold">
                 <?= $enclosureManager->findCountHungryAnimals($enclosure->getId()) ?>
                 <?= $enclosureManager->findCountHungryAnimals($enclosure->getId())>1? ' affamés' : ' affamé' ?>
               </li>
-              <li class="text-lan text-green-1 text-center font-semibold">
+              <li class="text-lan text-emerald-900 text-center font-semibold">
                 <?= $enclosureManager->findCountSickAnimals($enclosure->getId()) ?>
                 <?= $enclosureManager->findCountSickAnimals($enclosure->getId())>1? ' malades' : ' malade' ?>
               </li>
-              <li class="text-lan text-green-1 text-center font-semibold">
+              <li class="text-lan text-emerald-900 text-center font-semibold">
                 <?= $enclosureManager->findCountSleppyAnimals($enclosure->getId()) ?>
                 <?= $enclosureManager->findCountSleppyAnimals($enclosure->getId())>1? ' endormis' : ' endormi' ?>
               </li>

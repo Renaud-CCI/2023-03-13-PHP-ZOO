@@ -7,7 +7,6 @@ class Zoo {
     private int $user_id;
     private array $employees_id;
     private int $enclosures_max_number;
-    private array $enclosures_array;
     private int $day;
     private int $budget;
 
@@ -66,16 +65,6 @@ class Zoo {
 
     public function setEnclosures_max_number($enclosures_max_number){
         $this->enclosures_max_number = $enclosures_max_number;
-
-        return $this;
-    }
-
-    public function getEnclosures_array(){
-        return $this->enclosures_array;
-    }
-
-    public function setEnclosures_array($enclosures_array) {
-        $this->enclosures_array = $enclosures_array;
 
         return $this;
     }

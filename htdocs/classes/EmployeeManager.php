@@ -9,12 +9,30 @@ class EmployeeManager {
     }
 
     public function findEmployee(int $id){
-        $query = $this->db->prepare('SELECT * FROM employees
+        $query = $this->db->prepare('SELECT *  FROM employees
                                     WHERE id = :id');
         $query->execute(['id' => $id,]);
 
         $employeeData = $query->fetch(PDO::FETCH_ASSOC);
 
+        // var_dump($employeeData);
+        // die;
+          
+        return new Employee($employeeData);
+                   
+    }
+
+    public function findZooEmployee(int $zooEmployeeId){
+        $query = $this->db->prepare('   SELECT ze.id, ze.actions, emp.name, emp.birthdate, emp.sex, emp.salary 
+                                        FROM zoosEmployees AS ze
+                                        JOIN employees AS emp
+                                        ON ze.employee_id = emp.id
+                                        WHERE ze.id = :zooEmployeeId');
+        $query->execute(['zooEmployeeId' => $zooEmployeeId,]);
+
+        $employeeData = $query->fetch(PDO::FETCH_ASSOC);
+
+        // var_dump($zooEmployeeId);
         // var_dump($employeeData);
         // die;
           
@@ -38,7 +56,7 @@ class EmployeeManager {
     }
 
     public function updateActions(int $employeeId, int $employeeActions){
-        $query = $this->db->prepare('   UPDATE employees 
+        $query = $this->db->prepare('   UPDATE zoosEmployees 
                                         SET actions = :actions 
                                         WHERE id = :id');
         $query->execute([   'id' => $employeeId,

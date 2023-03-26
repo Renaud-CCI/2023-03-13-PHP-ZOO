@@ -8,17 +8,25 @@ class ZooManager {
         $this->setDb($db);
     }
 
-    public function setZooInDB(string $name, string $userId, array $employeesId){
+    public function setZooInDB(string $name, string $userId){
 
-        $query = $this->db->prepare('   INSERT INTO zoos (name,user_id, employees_id)
-                                        VALUES (:name,:user_id, :employeesId)');
+        $query = $this->db->prepare('   INSERT INTO zoos (name,user_id)
+                                        VALUES (:name,:user_id)');
         $query->execute([   'name' => $name,
-                            'user_id' => $userId,
-                            'employeesId' => serialize($employeesId)
+                            'user_id' => $userId
                         ]);
        
         
     }
+
+    public function setZooEmployee(int $zoo_id, Employee $employee){
+        $query = $this->db->prepare('   INSERT INTO zoosEmployees (zoo_id, employee_id, actions)
+                                        VALUES (:zoo_id, :employee_id, :actions)');
+        $query->execute([   'zoo_id' => $zoo_id,
+                            'employee_id' => $employee->getId(),
+                            'actions' => $employee->getActions()
+                        ]);
+    } 
 
     public function findZoo(int $id){
         $query = $this->db->prepare('SELECT * FROM zoos
@@ -27,12 +35,7 @@ class ZooManager {
 
         $zooDatas = $query->fetch(PDO::FETCH_ASSOC);
 
-        $zooDatas['employees_id'] = unserialize($zooDatas['employees_id']);
-        $zooDatas['enclosures_array'] = unserialize($zooDatas['enclosures_array']);
-
         return new Zoo ($zooDatas);
-
-        
     }
 
     public function findAllZoosOfUser(int $user_id){
@@ -44,12 +47,8 @@ class ZooManager {
 
         $allZoosAsObjects = [];
                 
-        foreach ($allZooDatas as $zooDatas) {
-            $zooDatas['employees_id'] = unserialize($zooDatas['employees_id']);
-            $zooDatas['enclosures_array'] = unserialize($zooDatas['enclosures_array']);
-        
-            $zoo = new Zoo($zooDatas);
-                
+        foreach ($allZooDatas as $zooDatas) {        
+            $zoo = new Zoo($zooDatas);                
             array_push($allZoosAsObjects, $zoo);  
         }
 
@@ -133,6 +132,47 @@ class ZooManager {
         $query->execute(['zoo_id' => $zoo_id,]);
         $count = $query->fetchColumn();
         return $count;             
+    }
+
+    public function findZooEmployees(int $zoo_id){
+        $query = $this->db->prepare(' SELECT ze.id, ze.actions, emp.name, emp.birthdate, emp.sex, emp.salary 
+                                    FROM zoosEmployees AS ze
+                                    JOIN employees AS emp
+                                    ON ze.employee_id = emp.id
+                                    WHERE ze.zoo_id = :zoo_id');
+        $query->execute(['zoo_id' => $zoo_id,]);
+
+        $allEmployeesData = $query->fetchAll(PDO::FETCH_ASSOC); 
+
+        $allEmployeesAsObjects = [];        
+
+        foreach ($allEmployeesData as $employeeData) {
+        $employeeAsObject = new Employee($employeeData);
+        array_push($allEmployeesAsObjects, $employeeAsObject);
+        }
+
+        return $allEmployeesAsObjects; 
+    }
+
+    public function findAllFreeEmployeesForZoo(int $zoo_id){
+        $query = $this->db->prepare('   SELECT * FROM employees
+                                        WHERE id NOT IN (
+                                            SELECT employee_id FROM zoosEmployees
+                                            WHERE zoo_id = :zoo_id);
+                                    ');
+        $query->execute(['zoo_id' => $zoo_id]);
+
+        $allEmployeesData = $query->fetchAll(PDO::FETCH_ASSOC); 
+
+        $allEmployeesAsObjects = [];        
+
+        foreach ($allEmployeesData as $employeeData) {
+        $employeeAsObject = new Employee($employeeData);
+        array_push($allEmployeesAsObjects, $employeeAsObject);
+        }
+
+        return $allEmployeesAsObjects; 
+                
     }
 
     public function updateZooEmployeesInDB(int $id, array $employeesId){

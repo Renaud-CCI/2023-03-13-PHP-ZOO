@@ -30,7 +30,7 @@ body{
     background-color: var(--white-dark);
 }
 
-.bg-green-1{
+.bg-emerald-900{
     background-color: var(--green-medium);
 }
 .bg-green-2{
@@ -39,7 +39,7 @@ body{
 
 
 /*---TEXTS COLORS---*/
-.text-green-1{
+.text-emerald-900{
     color:var(--green-medium);
 }
 

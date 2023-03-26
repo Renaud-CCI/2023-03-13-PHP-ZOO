@@ -1,7 +1,7 @@
-<?php 
+<?php
+session_start();
 
-setcookie("employee_id");
-
+unset($_SESSION["employee_id"]);
 
 header('Location:../index.php');
 
