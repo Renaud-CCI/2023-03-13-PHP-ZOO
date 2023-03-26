@@ -112,9 +112,9 @@ if ($enclosure->getAnimals_type() == 'default'){
 
         <div class="m-4 flex justify-center items-center flex-row text-end">
             <label class="text-3xl font-bold text-emerald-900 text-phosph w-1/2" for="animalWeight">Poids</label>
-            <input class="zooNameInput bg-transparent shadow appearance-none rounded w-32 m-4 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline w-1/2" id="animalWeight" name="animalWeight" type="number" placeholder="poids (kg)" step="0.5" required>
+            <input class="zooNameInput bg-transparent shadow appearance-none rounded w-32 m-4 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline w-1/2" id="animalWeight" name="animalWeight" type="number" min="0" placeholder="poids (kg)" step="0.5" required>
             <label class="text-3xl font-bold text-emerald-900 text-phosph w-1/2" for="animalHeight">Taille</label>
-            <input class="zooNameInput bg-transparent shadow appearance-none rounded w-32 m-4 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline w-1/2" id="animalHeight" name="animalHeight" type="number" placeholder="taille (m)" step="0.1" required>
+            <input class="zooNameInput bg-transparent shadow appearance-none rounded w-32 m-4 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline w-1/2" id="animalHeight" name="animalHeight" type="number" min="0" placeholder="taille (m)" step="0.1" required>
         </div>
 
 

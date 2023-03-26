@@ -162,7 +162,7 @@ if (!isset ($_SESSION['user_id'])){
         </p>
         <p class="text-2xl font-bold text-center mb-4">
         <button class=" bg-transparent hover:bg-emerald-900 text-emerald-900 font-semibold hover:text-amber-50 py-1 px-3 border border-emerald-900 hover:border-transparent rounded" onclick="window.location.href = './index.php?create_zoo=true';">
-          créé une nouvelle aventure !
+          crée une nouvelle aventure !
         </button>
         
         </p>
@@ -237,6 +237,7 @@ if (!isset ($_SESSION['user_id'])){
         </div>
 
         <p class="text-3xl font-bold text-center m-2 text-emerald-900 text-phosph">Choisis un employé</p>
+
         <div class="grid grid-cols-3 sm:grid-cols-5 gap-4">
           <?php foreach ($allEmployees as $employee) : ?>
           <div class="">
@@ -247,18 +248,26 @@ if (!isset ($_SESSION['user_id'])){
               <ul class="text-sm mt-2 items-center">
                 <li class="text-lan text-emerald-900 text-center font-semibold"><?=$employee->getAge()?> ans</li>
                 <li class="flex justify-center text-lan text-emerald-900 text-center font-semibold">Sexe : <img src="<?=$employee->getGenderSymbol()?>" alt="<?=$employee->getSex()?>" class="w-4 h-4 inline-block ml-1"></li>
-
+                <li class="flex justify-center text-lan text-emerald-900 text-center font-semibold">Actions : <?= $employee->getActions() ?>/j</li>
+                <li class="flex justify-center text-lan text-emerald-900 text-center font-semibold">Salaire : <?= $employee->getSalary() ?>/j</li>
               </ul>
             </label>
-          </div>
-  
-    
+          </div>    
           <?php endforeach; ?>
         </div>
         
         <div class="flex flex-col items-center mt-6">
           <button class="bg-emerald-900 text-white-1 font-bold py-2 px-4 rounded w-64">
             Valider
+          </button>
+        </div>
+
+        <div class="flex flex-col items-center mt-6">
+        <button class="bg-red-700 text-white-1 font-bold py-2 px-4 rounded w-64 mb-6" onclick="window.location.href = './index.php?>';">
+          Annuler
+        </button>
+      </div>
+
       </form>
 
 
