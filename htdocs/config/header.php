@@ -11,3 +11,6 @@
     
     </head>
 <body>
+
+<div id="conteneur-page">
+   <div id="enveloppe-contenu">

@@ -75,7 +75,7 @@ if (!isset ($_SESSION['user_id'])){
 
 <section id="connexionSection" class="container mx-auto flex justify-center items-center h-screen" style="display:<?=$connexionSectionDisplay?>">
   <div class="flex flex-col items-center">
-    <img class="max-h-full sm:max-w-xs w-full" src="./assets/images/logos/Zoo-logo.png" alt="logo du zoo">
+    <img class="max-h-full max-w-lg" src="./assets/images/logos/Zoo-logo.png" alt="logo du zoo">
     <div class="my-form p-8 rounded-lg shadow-lg">
       <h2 class="text-emerald-900 text-2xl font-bold mb-8">Connexion</h2>
       <form action="./index.php" method="post">
@@ -99,7 +99,7 @@ if (!isset ($_SESSION['user_id'])){
 
 <section id="inscriptionSection" class="container mx-auto flex justify-center items-center h-screen" style="display:<?=$inscriptionSectionDisplay?>">
   <div class="flex flex-col items-center">
-    <img class="max-w-xl max-h-full sm:max-w-xs" src="./assets/images/logos/Zoo-logo.png" alt="Image description">
+    <img class="max-h-full max-w-lg" src="./assets/images/logos/Zoo-logo.png" alt="Image description">
     <div class="my-form p-8 rounded-lg shadow-lg">
       <h2 class="text-emerald-900 text-2xl font-bold mb-8">Inscription</h2>
 

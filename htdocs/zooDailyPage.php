@@ -43,12 +43,21 @@ $childrenEntrances = $entrances - $adultsEntrances;
 $adultsEntrancesGain = $adultsEntrances * $adultsEntrancePrice ;
 $childrenEntrancesGain = $childrenEntrances * $childrenEntrancePrice ;
 
+// calcul des gains de la boutique souvenir
+$giftShopGain = 0;
+for ($i=0; $i < $adultsEntrances; $i++) { 
+    $giftShopGain += rand(0,10);
+}
+
 
 // calculs des coûts
-$employeesCost = count($zooManager->findZooEmployees($zoo->getId())) * 100;
+$employeesCost = 0;
+foreach ($zooManager->findZooEmployees($zoo->getId()) as $employee){
+    $employeesCost += $employee->getSalary();
+}
 
 // Gains totaux
-$dailyGain = $adultsEntrancesGain + $childrenEntrancesGain - $employeesCost;
+$dailyGain = $adultsEntrancesGain + $childrenEntrancesGain + $giftShopGain - $employeesCost;
 
 //--Insertions en DB et retour vers le zoo--
 if (isset($_GET['dailyGain'])){
@@ -58,7 +67,7 @@ if (isset($_GET['dailyGain'])){
     
     // updates employee actions
     foreach ($zooManager->findZooEmployees($zoo->getId()) as $employee){
-        $employeeManager->updateActions($employee->getId(), 10);
+        $employeeManager->updateActions($employee->getId(), $employee->getDefault_actions());
     }
     
     // update de la propreté des enclos
@@ -164,6 +173,24 @@ require_once("./config/header.php");
                 <td>-</td>
                 <td><?= $adultsEntrancesGain + $childrenEntrancesGain ?> 💰</td>
             </tr>
+            </tbody>
+        </table>
+    </div>
+
+
+    <div id="giftShopTable" class="w-11/12 sm:w-2/3 lg:w-1/2 rounded-lg overflow-hidden mx-auto text-2xl text-lan text-emerald-900 my-4">
+        <table class="w-full text-center border border_green-1">
+            <thead class="bg-emerald-900 text-white-1">
+                <tr>
+                    <th colspan="4">Boutique souvenirs</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr class="">
+                    <td colspan="3">Ventes</td>
+                    <td><?= $giftShopGain ?> 💰</td>
+                </tr>
+
             </tbody>
         </table>
     </div>

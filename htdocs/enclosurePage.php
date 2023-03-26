@@ -30,10 +30,11 @@ $employee = $employeeManager->findZooEmployee($_SESSION['employee_id']);
 // variables
 $nutritionCost = 0 ;
 $healthCost = 0;
-$cleanCost = (10 - $enclosure->getCleanliness()) * 20;
+$cleanCost = (10 - $enclosure->getCleanliness()) * ($enclosure->getAnimalPrice()/20);
 foreach ($allAnimalsAsObject as $animal){
-  $nutritionCost += (10 - $animal->getIsHungry())*5;
-  $healthCost += (10 - $animal->getIsSick())*5;
+  $animalRate= ($animal->getPrice()/80);
+  $nutritionCost += (10 - $animal->getIsHungry())*$animalRate;
+  $healthCost += (10 - $animal->getIsSick())*$animalRate;
 }
 $nutritionCost = round($nutritionCost);
 $healthCost = round($healthCost);
@@ -75,7 +76,6 @@ if (isset ($_POST['action'])){
 
   header('Location:./enclosurePage.php');
 }
-
 
 
 
@@ -126,7 +126,7 @@ require_once("./config/header.php");
           <img src="https://api.dicebear.com/5.x/personas/svg?seed=<?= $employee->getName() ?>" class="w-8">
           <span class="m-1 mt-3 text-2xl"><?=$employee->getName()?></span>
         </div>
-        <p class="text-base items-center justify-center flex flex-row"><?=$employee->getActions()?> 🛠️</p>
+        <p class="text-base items-center justify-center flex flex-row <?= $employee->getActions()>0? '' : 'text-orange-700'?>"><?=$employee->getActions()?> 🛠️</p>
       </div>
 
     </div>
@@ -194,35 +194,62 @@ require_once("./config/header.php");
   
 
   <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mx-auto mt-6 justify-items-center">
-    <button class="bg-emerald-800 bg-emerald-900 text-white-1 font-bold py-2 px-4 rounded w-48 mb-2" onclick="window.location.href = './addAnimal.php?enclosure_id=<?=$_SESSION['enclosure_id']?>';">
-      Ajouter un animal
-    </button>
-
-    <form action="./enclosurePage.php" method="post">
-      <input type="hidden" name="action" value="nutrition">
-      <button type="submit"class="bg-emerald-800 bg-emerald-900 text-white-1 font-bold py-2 px-4 rounded w-48 mb-2">
-        Nourrir l'enclos<br>
-        <span class="mx-1 text-sm">-<?= $nutritionCost ?> 💰</span>
-        <span class="mx-1 text-sm">-1 🛠️</span>
+    <?php if ($enclosureManager->findCountAnimals($enclosure->getId())<6) : ?>
+      <button class="bg-emerald-900 text-white-1 font-bold py-2 px-4 rounded w-48 mb-2" onclick="window.location.href = './addAnimal.php?enclosure_id=<?=$_SESSION['enclosure_id']?>'">
+        Ajouter un animal
       </button>
+    <?php else : ?>
+      <button class="bg-orange-700 text-white-1 font-bold py-2 px-4 rounded w-48 mb-2">
+      ⚠️ Nombre max d'animaux atteint ⚠️
+      </button>
+    <?php endif ?>
+
+    <form action="./enclosurePage.php" method="<?= $employee->getActions()>0? 'post' : ''?>">
+      <input type="hidden" name="action" value="nutrition">
+      <?php if ($employee->getActions()>0) : ?>
+        <button type="submit"class="bg-emerald-900 text-white-1 font-bold py-2 px-4 rounded w-48 mb-2">
+          Nourrir l'enclos<br>
+          <span class="mx-1 text-sm">-<?= $nutritionCost ?> 💰</span>
+          <span class="mx-1 text-sm">-1 🛠️</span>
+        </button>
+      <?php else : ?>
+        <button type="submit"class="bg-orange-700 text-white-1 font-bold py-2 px-4 rounded w-48 mb-2">
+        Nourrir l'enclos<br>
+          <span class="mx-1 text-sm">⚠️ <?= $employee->getName() ?> a 0 action ⚠️</span>
+        </button>
+      <?php endif; ?>
     </form>
 
-    <form action="./enclosurePage.php" method="post">
+    <form action="./enclosurePage.php" method="<?= $employee->getActions()>0? 'post' : ''?>">
       <input type="hidden" name="action" value="healing">
-      <button type="submit"class="bg-emerald-800 bg-emerald-900 text-white-1 font-bold py-2 px-4 rounded w-48 mb-2">
-        Soigner l'enclos<br>
-        <span class="mx-1 text-sm">-<?= $healthCost ?> 💰</span>
-        <span class="mx-1 text-sm">-1 🛠️</span>
-      </button> 
+      <?php if ($employee->getActions()>0) : ?>
+        <button type="submit"class="bg-emerald-900 text-white-1 font-bold py-2 px-4 rounded w-48 mb-2">
+          Soigner l'enclos<br>
+          <span class="mx-1 text-sm">-<?= $healthCost ?> 💰</span>
+          <span class="mx-1 text-sm">-1 🛠️</span>
+        </button>
+      <?php else : ?>
+        <button type="submit"class="bg-orange-700 text-white-1 font-bold py-2 px-4 rounded w-48 mb-2">
+        Nourrir l'enclos<br>
+          <span class="mx-1 text-sm">⚠️ <?= $employee->getName() ?> a 0 action ⚠️</span>
+        </button>
+      <?php endif; ?>
     </form>
 
-    <form action="./enclosurePage.php" method="post">
+    <form action="./enclosurePage.php" method="<?= $employee->getActions()>0? 'post' : ''?>">
       <input type="hidden" name="action" value="cleaning">
-      <button type="submit" class="bg-emerald-800 bg-emerald-900 text-white-1 font-bold py-2 px-4 rounded w-48 mb-2">
-        Nettoyer l'enclos<br>
-        <span class="mx-1 text-sm">-<?= $cleanCost ?> 💰</span>
-        <span class="mx-1 text-sm">-1 🛠️</span>
-      </button> 
+      <?php if ($employee->getActions()>0) : ?>
+        <button type="submit" class="bg-emerald-900 text-white-1 font-bold py-2 px-4 rounded w-48 mb-2">
+          Nettoyer l'enclos<br>
+          <span class="mx-1 text-sm">-<?= $cleanCost ?> 💰</span>
+          <span class="mx-1 text-sm">-1 🛠️</span>
+        </button>
+      <?php else : ?>
+        <button type="submit"class="bg-orange-700 text-white-1 font-bold py-2 px-4 rounded w-48 mb-2">
+          Nourrir l'enclos<br>
+          <span class="mx-1 text-sm">⚠️ <?= $employee->getName() ?> a 0 action ⚠️</span>
+        </button>
+      <?php endif; ?> 
     </form>
   </div>
 

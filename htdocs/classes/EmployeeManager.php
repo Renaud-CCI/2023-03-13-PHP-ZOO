@@ -23,7 +23,7 @@ class EmployeeManager {
     }
 
     public function findZooEmployee(int $zooEmployeeId){
-        $query = $this->db->prepare('   SELECT ze.id, ze.actions, emp.name, emp.birthdate, emp.sex, emp.salary 
+        $query = $this->db->prepare('   SELECT ze.id, ze.actions, ze.default_actions, emp.name, emp.birthdate, emp.sex, emp.salary 
                                         FROM zoosEmployees AS ze
                                         JOIN employees AS emp
                                         ON ze.employee_id = emp.id

@@ -20,11 +20,12 @@ class ZooManager {
     }
 
     public function setZooEmployee(int $zoo_id, Employee $employee){
-        $query = $this->db->prepare('   INSERT INTO zoosEmployees (zoo_id, employee_id, actions)
-                                        VALUES (:zoo_id, :employee_id, :actions)');
+        $query = $this->db->prepare('   INSERT INTO zoosEmployees (zoo_id, employee_id, actions, default_actions)
+                                        VALUES (:zoo_id, :employee_id, :actions, :default_actions)');
         $query->execute([   'zoo_id' => $zoo_id,
                             'employee_id' => $employee->getId(),
-                            'actions' => $employee->getActions()
+                            'actions' => $employee->getActions(),
+                            'default_actions' => $employee->getActions(),
                         ]);
     } 
 
@@ -135,7 +136,7 @@ class ZooManager {
     }
 
     public function findZooEmployees(int $zoo_id){
-        $query = $this->db->prepare(' SELECT ze.id, ze.actions, emp.name, emp.birthdate, emp.sex, emp.salary 
+        $query = $this->db->prepare(' SELECT ze.id, ze.actions, ze.default_actions, emp.name, emp.birthdate, emp.sex, emp.salary 
                                     FROM zoosEmployees AS ze
                                     JOIN employees AS emp
                                     ON ze.employee_id = emp.id

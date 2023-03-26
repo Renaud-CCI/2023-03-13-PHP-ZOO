@@ -1,6 +1,6 @@
 <?php 
 require_once("./config/autoload.php");
-var_dump($_SESSION);
+
 $db = require_once("./config/db.php");
 
 function prettyDump($data) {
@@ -76,6 +76,7 @@ $allFreeEmployeesForZoo = $zooManager->findAllFreeEmployeesForZoo($zoo->getId())
             <ul class="text-sm mt-2 items-center">
               <li class="text-lan text-emerald-900 text-center font-semibold"><?=$employee->getAge()?> ans</li>
               <li class="flex justify-center text-lan text-emerald-900 text-center font-semibold">Sexe : <img src="<?=$employee->getGenderSymbol()?>" alt="<?=$employee->getSex()?>" class="w-4 h-4 inline-block ml-1"></li>
+              <li class="flex justify-center text-lan text-emerald-900 text-center font-semibold">Actions : <?= $employee->getActions() ?>/j</li>
               <li class="flex justify-center text-lan text-emerald-900 text-center font-semibold">Salaire : <?= $employee->getSalary() ?>/j</li>
 
             </ul>

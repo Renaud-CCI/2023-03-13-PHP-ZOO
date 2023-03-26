@@ -32,8 +32,12 @@ $isEmployeeColor = "text-orange-700";
 if (isset($_SESSION['employee_id'])){
   $choosenEmployee = $employeeManager->findZooEmployee($_SESSION['employee_id']);
 
+  if ($choosenEmployee->getActions() == 0) {
+    $isEmployee = "⚠️" . $choosenEmployee->getName() . " ne peut plus travailler aujourd'hui ! ⚠️";
+  } else {
   $isEmployee = $choosenEmployee->getName() . " va bosser pour toi";
   $isEmployeeColor = "text-emerald-900";
+  }
 }
 
 $allEnclosures = $enclosureManager->findAllEnclosuresOfZoo($_SESSION['zoo_id']);
@@ -109,7 +113,7 @@ if (isset($_POST['zooName'])){
         <form action="" method="get">
           <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
             <?php foreach ($zooManager->findZooEmployees($zoo->getId()) as $employee) : ?>
-              <div class="inline-block w-20 mx-auto <?= isset($_SESSION['employee_id'])? ($_SESSION['employee_id'] == $employee->getId() ? 'border border-2 border_green-1 rounded-full' : '') : '' ?>">
+              <div class="inline-block w-20 mx-auto <?= isset($_SESSION['employee_id'])? ($_SESSION['employee_id'] == $employee->getId() ? ($employee->getActions()>0 ? 'border border-2 border_green-1 rounded-full' : 'border border-2 border-orange-700 rounded-full') : '' ): '' ?>">
                 <input class="employee-input hidden" id="<?=$employee->getId()?>" type="radio" name="employeeId" value="<?=$employee->getId()?>" required>
                 <label class="flex flex-col p-2 cursor-pointer bg-white shadow-lg rounded-full text-center text-lan" for="<?=$employee->getId()?>" onclick="window.location.href = './traitments/chooseEmployee.php?employee_id=<?=$employee->getId()?>'">
                   <img src="https://api.dicebear.com/5.x/personas/svg?seed=<?= $employee->getName() ?>" class="mx-auto w-16">
@@ -171,7 +175,7 @@ if (isset($_POST['zooName'])){
     <div class="grid grid-cols-3 lg:grid-cols-6 gap-1 text-center justify-center">
       <?php foreach ($allEnclosures as $enclosure) : ?>
         
-        <a class="inline-block" href="<?= isset($_SESSION['employee_id'])? './enclosurePage.php?enclosure_id='.$enclosure->getId().'&employee_id='.$_SESSION['employee_id'] : ''?>">
+        <a class="inline-block" href="<?= (isset($_SESSION['employee_id']) ? ($choosenEmployee->getActions()>0 ? './enclosurePage.php?enclosure_id='.$enclosure->getId().'&employee_id='.$_SESSION['employee_id'] : '') : '')?>">
 
           <div class="mx-2 my-2 p-1 cursor-pointer bg-white rounded-lg shadow-lg">        
             <span class="text-xl text-center font-semibold uppercase text-phosph text-emerald-900"><?=$enclosure->getName()?></span>
