@@ -39,6 +39,8 @@ if (!isset ($_SESSION['user_id'])){
             $userManager->setUserInDB($_POST['inscription_user_name']);
             $user = $userManager->findUserByName($_POST['inscription_user_name']);
             $_SESSION['user_id'] = $user->getId();
+            header('Location: ./index.php');
+            exit();
         }
     }
 
@@ -58,7 +60,7 @@ if (!isset ($_SESSION['user_id'])){
     $landingSectionDisplay = 'block';
     $zoosDivDisplay = isset($_GET['create_zoo']) ? 'none' : 'block';
     $createZooDivDisplay= isset($_GET['create_zoo']) ? 'block' : 'none';
-    $subtitleText = $zooManager->findAllZoosOfUser($_SESSION['user_id'])? "Choisis un zoo ci dessous ou" : "";
+    $subtitleText = $zooManager->findAllZoosOfUser($_SESSION['user_id'])? "Choisis un zoo ci-dessous ou" : "";
 
     //variables utiles
     $user = $userManager->findUserById($_SESSION['user_id']);
@@ -75,7 +77,7 @@ if (!isset ($_SESSION['user_id'])){
 
 <section id="connexionSection" class="container mx-auto flex justify-center items-center h-screen" style="display:<?=$connexionSectionDisplay?>">
   <div class="flex flex-col items-center">
-    <img class="max-h-full max-w-lg" src="./assets/images/logos/Zoo-logo.png" alt="logo du zoo">
+    <img class="max-h-full max-w-sm lg:max-w-lg" src="./assets/images/logos/Zoo-logo.png" alt="logo du zoo">
     <div class="my-form p-8 rounded-lg shadow-lg">
       <h2 class="text-emerald-900 text-2xl font-bold mb-8">Connexion</h2>
       <form action="./index.php" method="post">
@@ -99,7 +101,7 @@ if (!isset ($_SESSION['user_id'])){
 
 <section id="inscriptionSection" class="container mx-auto flex justify-center items-center h-screen" style="display:<?=$inscriptionSectionDisplay?>">
   <div class="flex flex-col items-center">
-    <img class="max-h-full max-w-lg" src="./assets/images/logos/Zoo-logo.png" alt="Image description">
+    <img class="max-h-full max-w-sm lg:max-w-lg" src="./assets/images/logos/Zoo-logo.png" alt="Image description">
     <div class="my-form p-8 rounded-lg shadow-lg">
       <h2 class="text-emerald-900 text-2xl font-bold mb-8">Inscription</h2>
 
@@ -175,7 +177,7 @@ if (!isset ($_SESSION['user_id'])){
         <?php foreach ($allZoos as $zoo) : ?>
           <div class="rounded-lg shadow-lg m-2 text-emerald-900 border border_green-1">
             <div class="px-4">
-              <p class="text-4xl font-semibold uppercase text-center text-phosph">
+              <p class="text-xl lg:text-3xl font-semibold uppercase text-center text-phosph overflow-hidden">
                 <?=$zoo->getName()?>
               </p>
               <p class="text-lg font-bold text-center text-phosph mb-2">

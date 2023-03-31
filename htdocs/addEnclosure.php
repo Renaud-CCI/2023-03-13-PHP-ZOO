@@ -64,9 +64,9 @@ if (isset($_GET['enclosureType'])){
 
   
 
-  <div id="allFreeEmployees" class="grid">
+  <div id="" class="">
 
-    <form action="./addEnclosure.php" method="get" class="mx-auto w-full max-w-screen-sm">
+    <form action="./addEnclosure.php" method="get" class="mx-auto">
       
 
       <p class="text-3xl font-bold text-center m-4 text-emerald-900 text-phosph">Choisis le type d'enclos</p>
@@ -75,7 +75,7 @@ if (isset($_GET['enclosureType'])){
         <div class="">
           <input class="employee-input hidden" id="Park" type="radio" name="enclosureType" value="Park" required>
           <label class="flex flex-col p-2 cursor-pointer bg-white rounded-lg shadow-lg" for="Park">
-            <span class="text-xl text-center font-semibold uppercase text-phosph text-emerald-900">Enclos</span>
+            <span class="text-base md:text-xl overflow-hidden text-center font-semibold uppercase text-phosph text-emerald-900">Enclos</span>
             <img src="https://img.icons8.com/officel/80/null/defensive-wood-wall.png" class="mx-auto w-20">
             <span class="text-base text-center font-semibold uppercase text-phosph text-emerald-900 mt-4">800 💰</span>            
           </label>
@@ -84,7 +84,7 @@ if (isset($_GET['enclosureType'])){
         <div class="">
           <input class="employee-input hidden" id="Aviary" type="radio" name="enclosureType" value="Aviary" required>
           <label class="flex flex-col p-2 cursor-pointer bg-white rounded-lg shadow-lg" for="Aviary">
-            <span class="text-xl text-center font-semibold uppercase text-phosph text-emerald-900">Volière</span>
+            <span class="text-base md:text-xl overflow-hidden text-center font-semibold uppercase text-phosph text-emerald-900">Volière</span>
             <img src="https://img.icons8.com/color-glass/48/000000/cage-of-a-bird.png" class="mx-auto w-20">
             <span class="text-base text-center font-semibold uppercase text-phosph text-emerald-900 mt-4">1000 💰</span> 
           </label>
@@ -93,7 +93,7 @@ if (isset($_GET['enclosureType'])){
         <div class="">
           <input class="employee-input hidden" id="Aquarium" type="radio" name="enclosureType" value="Aquarium" required>
           <label class="flex flex-col p-2 cursor-pointer bg-white rounded-lg shadow-lg" for="Aquarium">
-            <span class="text-xl text-center font-semibold uppercase text-phosph text-emerald-900">Aquarium</span>
+            <span class="text-base md:text-xl overflow-hidden text-center font-semibold uppercase text-phosph text-emerald-900">Aquarium</span>
             <img src="https://img.icons8.com/dusk/64/null/aquarium.png" class="mx-auto w-20">
             <span class="text-base text-center font-semibold uppercase text-phosph text-emerald-900 mt-4">1200 💰</span> 
           </label>
@@ -101,10 +101,10 @@ if (isset($_GET['enclosureType'])){
       </div>
 
       <div class="m-6 flex flex-col justify-center items-center">
-        <label class="block text-3xl font-bold text-center m-2 text-emerald-900 text-phosph" for="enclosureName">
+        <label class="block text-3xl font-bold text-center mt-4 text-emerald-900 text-phosph" for="enclosureName">
           Nom de ton enclos
         </label>
-        <input class="zooNameInput bg-transparent shadow appearance-none rounded w-96 m-4 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="enclosureName" name="enclosureName" type="text" placeholder="nom de l'enclos" required>
+        <input class="zooNameInput bg-transparent shadow appearance-none rounded w-72 lg:w-96 mb-6 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="enclosureName" name="enclosureName" type="text" placeholder="nom de l'enclos" required>
       </div>
       
       <input type="hidden" name="zoo_id" value="<?=$_GET['zoo_id']?>">

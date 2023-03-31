@@ -9,8 +9,8 @@ class UserManager {
     }
 
     public function findUserByName(string $name){
-        $query = $this->db->prepare('SELECT * FROM users WHERE name = :name ');
-        $query->execute(['name' => $name]);
+        $query = $this->db->prepare('SELECT * FROM users WHERE LOWER(name) = :name ');
+        $query->execute(['name' => strtolower($name)]);
         
         $userData = $query->fetch(); 
 

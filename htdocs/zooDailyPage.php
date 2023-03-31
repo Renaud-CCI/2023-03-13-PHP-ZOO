@@ -14,7 +14,6 @@ $employeeManager = new EmployeeManager($db);
 $enclosureManager = new EnclosureManager($db);
 $animalManager = new AnimalManager($db);
 
-
 $zoo = $zooManager->findZoo($_SESSION['zoo_id']);
 $allAnimalsOfZooAsObject = $zooManager->findAllAnimalsOfZoo($zoo->getId());
 $allEnclosures = $enclosureManager->findAllEnclosuresOfZoo($zoo->getId());
@@ -136,13 +135,13 @@ require_once("./config/header.php");
 
 <section id="pageBody" class="bg-white-1 flex flex-col justify-center items center mt-6">
 
-    <h1 class="text-6xl text-phosph text-emerald-900 font-bold text-center mb-4"><?= $zoo->getName() ?></h1>
+    <h1 class="text-5xl lg:text-6xl overflow-hidden text-phosph text-emerald-900 font-bold text-center mb-4"><?= $zoo->getName() ?></h1>
     <p class="text-3xl text-phosph text-emerald-900 font-bold text-center mb-2"> Jour 
       <?= $zoo->getDay() ?>
     </p>
 
     <div id="entrancesTable" class="w-11/12 sm:w-2/3 lg:w-1/2 rounded-lg overflow-hidden mx-auto text-2xl text-lan text-emerald-900 mt-8 mb-4">
-        <table class="w-full text-center border border_green-1 rounded-lg">
+        <table class="w-full text-center text-lg md:text-2xl border border_green-1 rounded-lg">
             <thead class="bg-emerald-900 text-white-1">
             <tr>
                 <th colspan="4">Visites de <?= $zoo->getName() ?> - Jour <?= $zoo->getDay() ?></th>
@@ -179,7 +178,7 @@ require_once("./config/header.php");
 
 
     <div id="giftShopTable" class="w-11/12 sm:w-2/3 lg:w-1/2 rounded-lg overflow-hidden mx-auto text-2xl text-lan text-emerald-900 my-4">
-        <table class="w-full text-center border border_green-1">
+        <table class="w-full text-center text-lg md:text-2xl border border_green-1">
             <thead class="bg-emerald-900 text-white-1">
                 <tr>
                     <th colspan="4">Boutique souvenirs</th>
@@ -197,7 +196,7 @@ require_once("./config/header.php");
 
 
     <div id="expensesTable" class="w-11/12 sm:w-2/3 lg:w-1/2 rounded-lg overflow-hidden mx-auto text-2xl text-lan text-emerald-900 my-4">
-        <table class="w-full text-center border border_green-1">
+        <table class="w-full text-center text-lg md:text-2xl border border_green-1">
             <thead class="bg-emerald-900 text-white-1">
                 <tr>
                     <th colspan="3">Dépenses de fin de journée</th>
@@ -219,7 +218,7 @@ require_once("./config/header.php");
     </div>
 
     <div id="dailyGainTable"  class="w-11/12 sm:w-2/3 lg:w-1/2 rounded-lg overflow-hidden mx-auto text-2xl text-lan text-emerald-900 my-4">
-        <table class="w-full text-center border border_green-1">
+        <table class="w-full text-center text-lg md:text-2xl border border_green-1">
             <thead class="bg-emerald-900 text-white-1">
                 <tr>
                     <th colspan="1">Gains jour <?= $zoo->getDay() ?></th>
@@ -234,7 +233,7 @@ require_once("./config/header.php");
     </div>
 
     <div id="followingDay" class="flex flex-col lg:flex-row justify-center items-center m-10">
-            <button class="w-1/2 text-3xl bg-emerald-900 text-white-1 font-bold py-1 px-2 rounded w-80 h-16 mx-2 mb-2" onclick="window.location.href = './zooDailyPage.php?dailyGain=<?=$dailyGain?>';">
+            <button class="w-1/2 text-2xl bg-emerald-900 text-white-1 font-bold py-1 px-2 rounded w-80 h-16 mx-2 mb-2" onclick="window.location.href = './zooDailyPage.php?dailyGain=<?=$dailyGain?>';">
                 Valider
             </button>
     </div>

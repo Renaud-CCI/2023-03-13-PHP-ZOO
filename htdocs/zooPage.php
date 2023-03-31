@@ -88,7 +88,7 @@ if (isset($_POST['zooName'])){
       </form>
     <?php else : ?>
       <div class="flex flex-row">
-        <h1 class="text-6xl font-bold text-center mb-4"><?= $zoo->getName() ?></h1>
+        <h1 class="text-5xl lg:text-6xl font-bold text-center mb-4 overflow-hidden max-w-xs lg:max-w-xl"><?= $zoo->getName() ?></h1>
         <form action="./zooPage.php" method="post" class="ml-2 mt-8 h-4 justify-center">
           <input type="hidden" name="modify" value="zooName">
             <button type="submit" class="text-xs px-0.5 m-0 border border_green-1 rounded" title="modifier">
@@ -98,17 +98,17 @@ if (isset($_POST['zooName'])){
       </div>
     <?php endif ?>
     
-    <p class="text-3xl font-bold text-center mb-2"> Jour 
+    <p class="text-2xl lg:text-3xl font-bold text-center mb-2"> Jour 
       <?= $zoo->getDay() ?>
     </p>
   </div>
 
   <div id="subtitle" class="row flex">
 
-    <div id="employeeChoice" class="w-1/3">
+    <div id="employeeChoice" class="w-1/2">
       <div id="employeesDiv" class="">
 
-        <h2 class="text-xl text-emerald-900 font-bold text-center mb-4">Choisis l'employé actif</h2>
+        <h2 class="text-xl text-emerald-900 font-bold text-center mb-4">Choisis l'employé.e actif.ve</h2>
 
         <form action="" method="get">
           <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
@@ -128,7 +128,7 @@ if (isset($_POST['zooName'])){
       </div>
     </div>
 
-    <div id="zooInfos" class="w-2/3 text-center">
+    <div id="zooInfos" class="w-1/2 text-center">
 
       <div>
         <ul class="text-base mb-2 items-center">
@@ -156,7 +156,7 @@ if (isset($_POST['zooName'])){
 
       <div class="flex flex-col lg:flex-row justify-center items-center">
         <button class="text-xs bg-emerald-800 bg-emerald-900 text-white-1 font-bold py-1 px-2 rounded w-40 h-9 mx-2 mb-2" onclick="window.location.href = './addEmployee.php?zoo_id=<?=$zoo->getId()?>';">
-          Ajouter un employé
+          Ajouter un.e employé.e
         </button>
 
         <button class="text-xs bg-emerald-800 bg-emerald-900 text-white-1 font-bold py-1 px-2 rounded w-40 h-9 mx-2 mb-2" onclick="window.location.href = './addEnclosure.php?zoo_id=<?=$zoo->getId()?>';">
@@ -178,7 +178,7 @@ if (isset($_POST['zooName'])){
         <a class="inline-block" href="<?= (isset($_SESSION['employee_id']) ? ($choosenEmployee->getActions()>0 ? './enclosurePage.php?enclosure_id='.$enclosure->getId().'&employee_id='.$_SESSION['employee_id'] : '') : '')?>">
 
           <div class="mx-2 my-2 p-1 cursor-pointer bg-white rounded-lg shadow-lg">        
-            <span class="text-xl text-center font-semibold uppercase text-phosph text-emerald-900"><?=$enclosure->getName()?></span>
+            <span class="textlg lg:text-xl overflow-hidden text-center font-semibold uppercase text-phosph text-emerald-900"><?=$enclosure->getName()?></span>
             <img src="<?= $enclosure->getAvatar() ?>" class="mx-auto w-20">
             <ul class="text-xs lg:text-sm mt-2 items-center">
               <li class="text-lan text-emerald-900 text-center font-semibold">

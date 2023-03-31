@@ -71,7 +71,7 @@ $allFreeEmployeesForZoo = $zooManager->findAllFreeEmployeesForZoo($zoo->getId())
         <div class="">
           <input class="employee-input hidden" id="<?=$employee->getId()?>" type="radio" name="employeeId" value="<?=$employee->getId()?>" required>
           <label class="flex flex-col p-2 cursor-pointer bg-white rounded-lg shadow-lg" for="<?=$employee->getId()?>">
-            <span class="text-xl text-center font-semibold uppercase text-phosph text-emerald-900"><?=$employee->getName()?></span>
+            <span class="text-lg lg:text-xl overflow-hidden text-center font-semibold uppercase text-phosph text-emerald-900"><?=$employee->getName()?></span>
             <img src="https://api.dicebear.com/5.x/personas/svg?seed=<?= $employee->getName() ?>" class="mx-auto w-20">
             <ul class="text-sm mt-2 items-center">
               <li class="text-lan text-emerald-900 text-center font-semibold"><?=$employee->getAge()?> ans</li>
